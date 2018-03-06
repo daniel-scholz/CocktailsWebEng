@@ -1,24 +1,29 @@
-from django.http import HttpResponse
-from django.template import loader
+from django.http import HttpResponse, Http404
+from django.shortcuts import render
 
 # Create your views here.
-from .models import Cocktail
+from .models import Cocktail, Ingredient
 
 
 def index(request):
     all_cocktails = Cocktail.objects.all()
-    context = {
-        "all_cocktails": all_cocktails,
-    }
-    template = loader.get_template('cocktails/index.html')
-    return HttpResponse(template.render(context, request))
+    return render(request, 'cocktails/index.html',  {"all_cocktails":all_cocktails, })
 
 
 def detail(request, id):
-    cocktail = Cocktail.objects.filter(id=id).first()
-    template = loader.get_template("cocktails/detail.html")
-    print(template)
-    context = {
-        "cocktail": cocktail,
-    }
-    return HttpResponse(template.render(context, request))
+    try:
+        cocktail = Cocktail.objects.get(pk = id)
+        print(cocktail)
+
+    except:
+        raise Http404(" Cocktail %d not found" % (id))
+    
+    try:
+        ingredients = Ingredient.objects.filter(cocktails = cocktail).all()
+        print(ingredients)
+    
+    except:
+        ingredients = ""
+        
+    return render(request, 'cocktails/detail.html',  {"cocktail":cocktail, "ingredients":ingredients, })
+

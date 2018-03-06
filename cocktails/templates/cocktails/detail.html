@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ cocktail.name }}</title>
+    <style>
+    body {
+        display:block;
+    }
+
+    </style>
 </head>
-<body>
-<img alt="{{ cocktail.name }} " style="border: 1px solid black;" src="{{ cocktail.image }}">
-
-
+    <body>
+    <a href="/cocktails"> <button> Home</button></a>
+    <img alt="A picture of {{ cocktail.name }} "  height= "100px" src="http://hd.wallpaperswide.com/thumbs/cocktails-t2.jpg">
+    {%if ingredients%}
+    <h1>
+        {{cocktail}} 
+    </h1>
+    <ul>
+        {%for i in ingredients%}
+            <li>{{i.name}} -- {{i.weight}} </li>
+        {%endfor%}
+    </ul>
+    {%else%}
+        No ingredients for {{cocktail.name}}  one.
+    {%endif%}
 </body>
 </html>
