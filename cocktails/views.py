@@ -15,9 +15,10 @@ def index(request):
 
 
 def detail(request, id):
-    c = Cocktail.objects.filter(id=id)
+    cocktail = Cocktail.objects.filter(id=id).first()
     template = loader.get_template("cocktails/detail.html")
+    print(template)
     context = {
-        "cocktail": c,
+        "cocktail": cocktail,
     }
     return HttpResponse(template.render(context, request))

@@ -1,9 +1,15 @@
 <head>
     <meta charset="UTF-8">
-    {% load static %}
+    <!--  {% load static %}
     <link href="{% static 'cocktails/style.css' %}" rel="stylesheet" type="text/css"/>
-
+-->
 </head>
 <body>
-<p>This is some html paragrahp ffs!</p>
+<h1>List of All Cocktails!</h1>
+{% for a in all_cocktails %}
+    <ul>
+        <li><a href="/cocktails/{{ a.id }}"> {{ a.name }}</a></li>
+    </ul>
+
+{% endfor %}
 </body>
