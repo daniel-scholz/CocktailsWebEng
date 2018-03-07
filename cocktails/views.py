@@ -21,9 +21,8 @@ def detail(request, id):
     try:
         ingredients = Ingredient.objects.filter(cocktails = cocktail).all()
         print(ingredients)
-    
+
     except:
         ingredients = ""
-        
-    return render(request, 'cocktails/detail.html',  {"cocktail":cocktail, "ingredients":ingredients, })
 
+    return render(request, 'cocktails/detail.html',  {"cocktail":cocktail, "ingredients":ingredients, })
