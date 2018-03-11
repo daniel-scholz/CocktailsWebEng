@@ -1,4 +1,5 @@
 * {
-    color: #123456;
-    background: aqua;
+  color: #123456;
+  background: aqua;
+  box-sizing: border-box;
 }

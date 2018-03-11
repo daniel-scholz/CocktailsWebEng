@@ -13,17 +13,24 @@
     <body>
     <a href="/cocktails"> <button> Home</button></a>
     <img alt="A picture of {{ cocktail.name }} "  height= "100px" src="http://hd.wallpaperswide.com/thumbs/cocktails-t2.jpg">
-    {%if ingredients%}
-    <h1>
-        {{cocktail}} 
-    </h1>
-    <ul>
-        {%for i in ingredients%}
-            <li>{{i.name}} -- {{i.weight}} </li>
+    <h1>{{cocktail}}</h1>
+    <h2>Rated {{cocktail.rating}}</h2>
+
+    {% if error_message %}
+        <h1>{{error_message}}</h1>
+    {% endif %}
+    
+    <form action= "{% url 'cocktails:favorite' cocktail.id%}" method="post">
+        {% csrf_token %}
+        {% for i in ingredients %}
+            <input type="checkbox" checked="checked" id="ingredient{{ forloop.counter }}" name="ingredient" value="{{ i.id }}">
+                <label for="ingredient{{ forloop.counter }}">{{i.name}}</label>
+                {%if i.is_alcohol %}
+                    <span>(alc.)</span>
+                {%endif%}
+                <br>                
         {%endfor%}
-    </ul>
-    {%else%}
-        No ingredients for {{cocktail.name}}  one.
-    {%endif%}
+        <button type="submit" value="alc">Drink!</button>
+    </form>
 </body>
 </html>

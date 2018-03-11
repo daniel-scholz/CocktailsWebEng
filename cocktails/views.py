@@ -1,5 +1,4 @@
-from django.http import HttpResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from .models import Cocktail, Ingredient
@@ -11,13 +10,8 @@ def index(request):
 
 
 def detail(request, id):
-    try:
-        cocktail = Cocktail.objects.get(pk = id)
-        print(cocktail)
+    cocktail = get_object_or_404(Cocktail, pk = id)
 
-    except:
-        raise Http404(" Cocktail %d not found" % (id))
-    
     try:
         ingredients = Ingredient.objects.filter(cocktails = cocktail).all()
         print(ingredients)
@@ -26,3 +20,35 @@ def detail(request, id):
         ingredients = ""
 
     return render(request, 'cocktails/detail.html',  {"cocktail":cocktail, "ingredients":ingredients, })
+
+
+def favorite(request, id):
+    cocktail = get_object_or_404(Cocktail, pk = id)
+    try:
+        selected_ingredient = Ingredient.objects.get(pk = request.POST['ingredient'])
+        print("selected ingredient:%s" % selected_ingredient.name)
+                
+        for key in request.POST.lists():
+
+            ##################################################
+            print("%s %s" % (key.index(key[1]), " abc"))
+
+    except(KeyError, Ingredient.DoesNotExist):
+        return render(request, 'cocktails/detail.html',  {
+            "cocktail":cocktail, 
+            "error_message":"you're dumb", 
+        })
+
+
+    try:
+        ingredients = Ingredient.objects.filter(cocktails = cocktail).all()
+        print(ingredients)
+
+    except:
+        ingredients = ""
+
+    selected_ingredient.is_alcohol = not selected_ingredient.is_alcohol
+    selected_ingredient.save()
+    return render(request, 'cocktails/detail.html',  {"cocktail":cocktail, "ingredients":ingredients, })
+
+    
