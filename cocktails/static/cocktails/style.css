@@ -1,5 +1,25 @@
-* {
-  color: #123456;
-  background: aqua;
-  box-sizing: border-box;
+body {
+    color: #fff;
+    background: white url("img/bar_background.jpg") no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+}
+
+body a {
+    color: #aaa;
+}
+
+body > * {
+    background: rgba(17, 17, 17, 0.5);
+}
+
+.navbar {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.navbar-header {
+    font-family: 'Rametto One', cursive;
+    font-weight: bolder;
 }
