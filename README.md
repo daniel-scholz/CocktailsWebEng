@@ -1,2 +1,2 @@
-# CocktailsWebEng
-Projekt für Web Engineering im 4. Semester der DHBW Mannheim
+# Interactive Coktails Web Page in Django
+Get yourself with taste!
