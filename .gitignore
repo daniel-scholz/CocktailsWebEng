@@ -15,6 +15,3 @@ cocktails/migrations/0002_auto_20180227_2220.py
 
 #virtual python environment
 venv/
-
-
-templates/
