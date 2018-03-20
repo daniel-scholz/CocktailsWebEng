@@ -1,12 +1,12 @@
 # Create your views here.
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .forms import UserForm
+from .forms import LoginForm, RegisterForm
 from .models import Cocktail, Ingredient
 
 
@@ -44,7 +44,7 @@ class CocktailDelete(DeleteView):
 
 
 class UserFormView(View):
-    form_class = UserForm
+    form_class = RegisterForm
     template_name = "cocktails/registration_form.html"
 
     # display blank form
@@ -62,6 +62,7 @@ class UserFormView(View):
             # cleaned (normalized) data
             username = form.cleaned_data['username']
             passwd = form.cleaned_data["password"]
+
             user.set_password(passwd)
             user.save()
 
@@ -72,3 +73,30 @@ class UserFormView(View):
                 login(request, user)
                 return redirect("cocktails:index")
         return render(request, self.template_name, {"form": form})
+
+
+class LoginFormView(View):
+    form_class = LoginForm
+    template_name = "cocktails/login_form.html"
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        username = request.POST["username"]
+        password = request.POST["password"]
+        # returns User objects if credentials r correct
+        user = authenticate(username=username, password=password)
+
+        if user is not None and user.is_active:
+            login(request, user)
+            return redirect("cocktails:index")
+        return render(request, self.template_name, {"form": form})
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("cocktails:index")

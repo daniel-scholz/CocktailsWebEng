@@ -46,9 +46,22 @@
                         <span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Cocktail
                     </a>
                 </li>
-                <li class=""><a href="#">
-                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; logout
-                </a></li>
+                {% if not user.is_authenticated %}
+                    <li>
+                        <a href="{% url "cocktails:login" %}">
+                            <span class=" glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; login
+                        </a>
+                    </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="">
+                        <a href="{% url "cocktails:logout" %}">
+                            Welcome, {{ user.username }}! &nbsp;
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; logout
+                        </a></li>
+                {% endif %}
+
+
             </ul>
         </div>
     </div>
