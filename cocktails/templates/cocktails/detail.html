@@ -5,28 +5,26 @@
 {% block title %}{{ cocktail.name }}{% endblock %}
 
 {% block body %}
-    <img alt="A picture of {{ cocktail.name }} " height="100px"
-         src="http://hd.wallpaperswide.com/thumbs/cocktails-t2.jpg">
     <h1>{{ cocktail }}</h1>
-    <h2>Rated {{ cocktail.rating }}</h2>
+    <img alt="A picture of {{ cocktail.name }} " height="200px"
+         src="{{ cocktail.picture.url }}">
 
     {% if error_message %}
         <h1>{{ error_message }}</h1>
     {% endif %}
 
-    <form action="{% url 'cocktails:favorite'  cocktail.id %}" title="tick to make the ingreddient (un)alcoholic"
-          method="POST">
-        {% csrf_token %}
+    <ul class="ingredient-list">
         {% for i in ingredients %}
-            <input type="checkbox" id="ingredient{{ forloop.counter }}" name="ingredient" value="{{ i.id }}">
-            <label for="ingredient{{ forloop.counter }}">{{ i.name }}</label>
-            {% if i.is_alcohol %}
-                <span>(alc.)</span>
-            {% endif %}
+            <li>
+                {{ i.name }}: {{ i.quantity }}
+                {% if i.is_alcohol %}
+                    <span>(alc.)</span>
+                {% endif %}
+            </li>
             <br>
         {% endfor %}
-        <button type="submit" value="alc">Drink!</button>
-    </form>
+
+    </ul>
 {% endblock %}
 
 </html>

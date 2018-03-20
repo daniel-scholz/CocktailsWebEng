@@ -1,46 +1,39 @@
-from django.shortcuts import render, get_object_or_404
-
 # Create your views here.
-from .models import Cocktail, Ingredient
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from cocktails.models import Cocktail, Ingredient
 
 
-def index(request):
-    all_cocktails = Cocktail.objects.all()
-    return render(request, 'cocktails/index.html', {"all_cocktails": all_cocktails, })
+class IndexView(ListView):
+    template_name = "cocktails/index.html"
+    context_object_name = 'all_cocktails'
+
+    def get_queryset(self):
+        return Cocktail.objects.all()
 
 
-def detail(request, id):
-    cocktail = get_object_or_404(Cocktail, pk=id)
+class IngredientsDetailView(DetailView):
+    model = Cocktail
+    template_name = "cocktails/detail.html"
 
-    try:
-        ingredients = Ingredient.objects.filter(cocktails=cocktail).all()
-        print(ingredients)
-
-    except:
-        ingredients = ""
-
-    return render(request, 'cocktails/detail.html', {"cocktail": cocktail, "ingredients": ingredients, })
+    def get_context_data(self, **kwargs):
+        context = super(IngredientsDetailView, self).get_context_data(**kwargs)
+        context["ingredients"] = Ingredient.objects.filter(cocktail=self.object.id)
+        # print(context)
+        return context
 
 
-def favorite(request, id):
-    cocktail = get_object_or_404(Cocktail, pk=id)
-    try:
-        selected_ingredients = []
-        for key in request.POST.getlist('ingredient'):
-            selected_ingredients.append(Ingredient.objects.get(pk=int(key)))
+class CocktailCreate(CreateView):
+    model = Cocktail
+    fields = ["name", "picture"]  # , "ingredient_set"]
 
-    except(KeyError, Ingredient.DoesNotExist):
-        return render(request, 'cocktails/detail.html', {
-            "cocktail": cocktail,
-            "error_message": "you're dumb",
-        })
 
-    try:
-        ingredients = Ingredient.objects.filter(cocktails=cocktail).all()
+class CocktailUpdate(UpdateView):
+    model = Cocktail
+    fields = ["name", "picture"]  # , "ingredient_set"]
 
-    except:
-        ingredients = ""
-    for s in selected_ingredients:
-        s.is_alcohol = not s.is_alcohol
-        s.save()
-    return render(request, 'cocktails/detail.html', {"cocktail": cocktail, "ingredients": ingredients, })
+class CocktailDelete(DeleteView):
+    model = Cocktail
+    success_url = reverse_lazy("cocktails:index")

@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}
-        TastyNDrunk
-    {% endblock %}</title>
+    <title>{% block title %}{% endblock %} | TastyNDrunk </title>
     {% load staticfiles %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -15,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'cocktails/style.css' %}"/>
 </head>
 <body>
-<nav class="navbar navbar-dark">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <!--Header-->
         <div class="navbar-header">
@@ -43,9 +41,11 @@
 
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li class=""><a href="#">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Cocktail
-                </a></li>
+                <li class="">
+                    <a href="{% url "cocktails:cocktail-add" %}">
+                        <span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Cocktail
+                    </a>
+                </li>
                 <li class=""><a href="#">
                     <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; logout
                 </a></li>
@@ -54,8 +54,6 @@
     </div>
 </nav>
 
-{% block body %}
-
-{% endblock %}
+{% block body %}{% endblock %}
 </body>
 </html>

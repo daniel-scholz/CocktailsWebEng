@@ -1,16 +1,15 @@
 body {
-    color: #fff;
-    background: white url("img/bar_background.jpg") no-repeat;
+    background: white no-repeat;
+/ / url("img/bar_background.jpg") no-repeat;
     background-size: cover;
     box-sizing: border-box;
 }
 
-body a {
-    color: #aaa;
-}
-
-body > * {
-    background: rgba(17, 17, 17, 0.5);
+body > .ingredient-list, .ingredient-list {
+    width: auto;
+    background: rgba(17, 17, 17, 0.2);
+    margin: 0 5px;
+    padding: 5px 20px;
 }
 
 .navbar {

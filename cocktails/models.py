@@ -1,29 +1,33 @@
 from django.db import models
+from django.urls import reverse
 
 
 # Create your models here.
 
 
 class Cocktail(models.Model):
-    name = models.CharField(max_length = 250)
-    rating = models.IntegerField()
-    picture = models.CharField(max_length = 100000)
+    name = models.CharField(max_length=250, unique=True)
+    rating = models.IntegerField(null=True)
+    picture = models.FileField()
 
-    def __str__(self):
-        return "%s (Rating: %d)" % (self.name, self.rating)
+    def get_absolute_url(self):
+        try:
+            ret = reverse("cocktails:detail", kwargs={'pk': self.pk})
+        except:
+            ret = "http://localhost:8000/cocktails/6/"
 
-
-class Ingredient(models.Model):
-    name = models.CharField(max_length = 250)
-    weight = models.FloatField(null = True)
-    quantity = models.FloatField(null = True)
-    cocktails = models.ManyToManyField(Cocktail)
-    is_alcohol = models.BooleanField(default = False)
+        return ret
 
     def __str__(self):
         return self.name
 
-#class Ingredient_Coktail(models.Model):
-#   c_name = models.ForeignKey(Cocktail, on_delete = models.CASCADE)
-#  i_name = models.ForeignKey(Ingredient, on_delete = models.CASCADE)
-  
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=250)
+    weight = models.FloatField(null=True)
+    quantity = models.FloatField(null=True)
+    cocktail = models.ManyToManyField(Cocktail)
+    is_alcohol = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name  # + ("%s" % self.is_alcohol)
