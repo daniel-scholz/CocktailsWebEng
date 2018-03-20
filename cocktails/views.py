@@ -1,9 +1,13 @@
 # Create your views here.
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from cocktails.models import Cocktail, Ingredient
+from .forms import UserForm
+from .models import Cocktail, Ingredient
 
 
 class IndexView(ListView):
@@ -21,7 +25,6 @@ class IngredientsDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(IngredientsDetailView, self).get_context_data(**kwargs)
         context["ingredients"] = Ingredient.objects.filter(cocktail=self.object.id)
-        # print(context)
         return context
 
 
@@ -34,6 +37,38 @@ class CocktailUpdate(UpdateView):
     model = Cocktail
     fields = ["name", "picture"]  # , "ingredient_set"]
 
+
 class CocktailDelete(DeleteView):
     model = Cocktail
     success_url = reverse_lazy("cocktails:index")
+
+
+class UserFormView(View):
+    form_class = UserForm
+    template_name = "cocktails/registration_form.html"
+
+    # display blank form
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {"form": form})
+
+    # process form data
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # fake, validation commit
+            user = form.save(commit=False)
+
+            # cleaned (normalized) data
+            username = form.cleaned_data['username']
+            passwd = form.cleaned_data["password"]
+            user.set_password(passwd)
+            user.save()
+
+            # returns User objects if credentials r correct
+            user = authenticate(username=username, password=passwd)
+
+            if user and user.is_active:
+                login(request, user)
+                return redirect("cocktails:index")
+        return render(request, self.template_name, {"form": form})
