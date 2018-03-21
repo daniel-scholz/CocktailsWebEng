@@ -13,5 +13,6 @@ urlpatterns = [
     path('cocktail/add', views.CocktailCreate.as_view(), name='cocktail-add'),
     path('cocktail/<int:pk>', views.CocktailUpdate.as_view(), name='cocktail-update'),
     path('cocktail/<int:pk>/delete/', views.CocktailDelete.as_view(), name='cocktail-delete'),
+    path("top5", views.TopFiveView.as_view(), name="top-five")
 
 ]

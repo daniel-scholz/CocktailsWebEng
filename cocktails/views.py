@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
+from extra_views import InlineFormSet
 
 from .forms import LoginForm, RegisterForm
 from .models import Cocktail, Ingredient
@@ -18,14 +19,29 @@ class IndexView(ListView):
         return Cocktail.objects.all()
 
 
+class TopFiveView(ListView):
+    template_name = "cocktails/top-five.html"
+    context_object_name = "cocktails"
+
+    def get_queryset(self):
+        return Cocktail.objects.all().order_by("drunk_scale")[:5]
+
+
 class IngredientsDetailView(DetailView):
     model = Cocktail
     template_name = "cocktails/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(IngredientsDetailView, self).get_context_data(**kwargs)
-        context["ingredients"] = Ingredient.objects.filter(cocktail=self.object.id)
+        context["ingredients"] = Ingredient.objects.filter(cocktails=self.object.id)
         return context
+
+
+# Cocktail creating and updating and stuff
+
+class IngredientInline(InlineFormSet):
+    model = Ingredient
+    fields = "__all__"
 
 
 class CocktailCreate(CreateView):
@@ -42,6 +58,8 @@ class CocktailDelete(DeleteView):
     model = Cocktail
     success_url = reverse_lazy("cocktails:index")
 
+
+# authentication stuff
 
 class UserFormView(View):
     form_class = RegisterForm

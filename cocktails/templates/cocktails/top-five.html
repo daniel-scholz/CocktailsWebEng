@@ -1,0 +1,13 @@
+{% extends "cocktails/base.html" %}
+{% block body %}
+    Here you will see da top 5 cocktails!
+    {% if cocktails %}
+        <ol>
+            {% for c in cocktails %}
+                <li>{{ c.name }}</li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <div>no top5 at da moment!</div>
+    {% endif %}
+{% endblock %}

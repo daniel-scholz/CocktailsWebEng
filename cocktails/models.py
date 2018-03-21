@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
 
@@ -7,16 +9,13 @@ from django.urls import reverse
 
 class Cocktail(models.Model):
     name = models.CharField(max_length=250, unique=True)
-    rating = models.IntegerField(null=True)
     picture = models.FileField()
+    drunk_scale = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    taste_scale = models.IntegerField(default=0)
+    creator = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        try:
-            ret = reverse("cocktails:detail", kwargs={'pk': self.pk})
-        except:
-            ret = "http://localhost:8000/cocktails/6/"
-
-        return ret
+        return reverse("cocktails:detail", kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.name
@@ -24,10 +23,13 @@ class Cocktail(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=250)
+
     weight = models.FloatField(null=True)
     quantity = models.FloatField(null=True)
-    cocktail = models.ManyToManyField(Cocktail)
+    volume = models.FloatField(null=True)
+
+    cocktails = models.ForeignKey(Cocktail, null=True, on_delete=models.CASCADE)
     is_alcohol = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name  # + ("%s" % self.is_alcohol)
+        return self.name
