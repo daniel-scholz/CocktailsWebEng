@@ -5,6 +5,12 @@
   padding: 0;
 }
 
+body {
+  background: url("img/bar_background.jpg") no-repeat fixed;
+  background-size: cover;
+
+}
+
 .navbar {
   width: 100%;
   display: inline-flex;
@@ -36,6 +42,7 @@
   display: flex;
   justify-content: center;
   .content {
+    background: rgba(255, 255, 255,0.8);
     margin: 10px 0;
     border: 1px solid black;
     width: 75%;
