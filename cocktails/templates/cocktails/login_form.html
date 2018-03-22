@@ -5,9 +5,10 @@
 
 {% block body %}
     <h1>Login, bitch!</h1>
+
     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% include "cocktails/form-template.html" %}
+        {% include "cocktails/form_template.html" %}
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-success">Drink!</button>

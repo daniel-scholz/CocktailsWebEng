@@ -35,7 +35,13 @@ body {
     border: 1px solid black;
     width: 75%;
     height: 500px;
-    position: relative; }
+    position: relative;
+    padding: 10px 20px; }
+    .content-wrapper .content .cocktails-list {
+      padding: 10px; }
+      .content-wrapper .content .cocktails-list li {
+        font-size: 1.5rem;
+        margin: 5px; }
     .content-wrapper .content .add {
       position: absolute;
       margin: auto;
@@ -48,8 +54,12 @@ body {
       border-radius: 50%;
       display: flex;
       justify-content: center; }
-      .content-wrapper .content .add a {
+      .content-wrapper .content .add .plus {
         text-decoration: none;
-        font-size: 3em; }
+        font-size: 2.5em; }
+    .content-wrapper .content .disabled {
+      background-color: darkslategrey !important; }
+      .content-wrapper .content .disabled .plus {
+        cursor: default; }
 
 /*# sourceMappingURL=style.css.map */

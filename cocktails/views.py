@@ -1,13 +1,17 @@
 # Create your views here.
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models.functions import Lower
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import UpdateView, DeleteView, CreateView
+from django.views.generic.edit import UpdateView, DeleteView
 from extra_views import InlineFormSet
 
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, CocktailForm
 from .models import Cocktail, Ingredient
 
 
@@ -27,6 +31,14 @@ class TopFiveView(ListView):
         return Cocktail.objects.all().order_by("drunk_scale")[:5]
 
 
+class AToZ(ListView):
+    template_name = "cocktails/a-to-z.html"
+    context_object_name = "cocktails"
+
+    def get_queryset(self):
+        return Cocktail.objects.all().order_by(Lower("name"))
+
+
 class IngredientsDetailView(DetailView):
     model = Cocktail
     template_name = "cocktails/detail.html"
@@ -38,15 +50,34 @@ class IngredientsDetailView(DetailView):
 
 
 # Cocktail creating and updating and stuff
-
 class IngredientInline(InlineFormSet):
     model = Ingredient
     fields = "__all__"
 
 
-class CocktailCreate(CreateView):
-    model = Cocktail
-    fields = ["name", "picture"]  # , "ingredient_set"]
+@method_decorator(login_required, name='dispatch')
+class CocktailCreate(View):
+    form_class = CocktailForm
+    template_name = "cocktails/cocktail_form.html"
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        # picture = request.POST["picture"]
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            cocktail = form.save(commit=False)
+            print(cocktail.picture)
+            cocktail.creator = request.user
+
+            form.save()
+            # return redirect("cocktails:index")
+            return redirect("cocktails:detail", cocktail.id)
+
+        return render(request, self.template_name, {"form": form})
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {"form": form})
 
 
 class CocktailUpdate(UpdateView):
@@ -73,6 +104,7 @@ class UserFormView(View):
     # process form data
     def post(self, request):
         form = self.form_class(request.POST)
+        print(form)
         if form.is_valid():
             # fake, validation commit
             user = form.save(commit=False)
@@ -118,3 +150,12 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect("cocktails:index")
+
+
+class ProfileView(DetailView):
+    model = User
+    context_object_name = "user"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        return context

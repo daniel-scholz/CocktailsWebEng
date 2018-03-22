@@ -5,7 +5,12 @@
 {% block title %}{{ cocktail.name }}{% endblock %}
 
 {% block body %}
-    <h1>{{ cocktail }}</h1>
+    <h1>{{ cocktail }} </h1>
+    <h2>by {{ cocktail.creator }}</h2>
+    {% if user == cocktail.creator or user.is_superuser %}
+        <span><a href="{% url "cocktails:cocktail-update" cocktail.id %}">edit</a></span>
+        <span><a href="{% url "cocktails:cocktail-delete" cocktail.id %}">delete</a></span>
+    {% endif %}
     <img alt="A picture of {{ cocktail.name }} " height="200px"
          src="{{ cocktail.picture.url }}">
 
@@ -23,7 +28,6 @@
             </li>
             <br>
         {% endfor %}
-
     </ul>
 {% endblock %}
 

@@ -42,13 +42,21 @@ body {
   display: flex;
   justify-content: center;
   .content {
-    background: rgba(255, 255, 255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     margin: 10px 0;
     border: 1px solid black;
     width: 75%;
     height: 500px;
     position: relative;
+    padding: 10px 20px;
 
+    .cocktails-list {
+      padding: 10px;
+      li {
+        font-size: 1.5rem;
+        margin: 5px;
+      }
+    }
     .add {
       position: absolute;
       margin: auto;
@@ -58,14 +66,21 @@ body {
       bottom: 0;
       right: 0;
       border: 1px solid black;
+
       background-color: greenyellow;
       border-radius: 50%;
 
       display: flex;
       justify-content: center;
-      a {
+      .plus {
         text-decoration: none;
-        font-size: 3em;
+        font-size: 2.5em;
+      }
+    }
+    .disabled {
+      background-color: darkslategrey !important;
+      .plus {
+        cursor: default;
       }
     }
   }

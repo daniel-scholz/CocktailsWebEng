@@ -13,7 +13,7 @@
     <div class="nav-part left">
         <div id="icon" class="nav-item"><a href="{% url "cocktails:index" %}">TastyCocktails</a></div>
         <div id="TOP5" class="nav-item"><a href="{% url "cocktails:top-five" %}">TOP 5</a></div>
-        <div id="" class="nav-item"><a href="#">A-Z</a></div>
+        <div id="" class="nav-item"><a href="{% url "cocktails:a-to-z" %}">A-Z</a></div>
     </div>
 
 
@@ -30,7 +30,7 @@
             <div class="nav-item">
                 <a href="#">Shopping List </a>
             </div>
-            <div class="nav-item "><a href="#">{{ user }}</a></div>
+            <div class="nav-item "><a href="#   ">{{ user }}</a></div>
             <div class="nav-item logout">
                 <a href="{% url "cocktails:logout" %}">Logout</a>
             </div>
@@ -40,7 +40,10 @@
 
 <div class="content-wrapper">
     <div class="content">{% block body %}{% endblock %}
-        <div class="add"><a href="{% url "cocktails:cocktail-add" %}"> +</a></div>
+        <div class="add">
+            <a class="plus" href="{% url "cocktails:cocktail-add" %}"
+               title="Log in to add cocktail!">
+                +</a></div>
     </div>
 </div>
 
