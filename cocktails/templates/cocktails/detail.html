@@ -6,7 +6,7 @@
 
 {% block body %}
     <h1>{{ cocktail }} </h1>
-    <h2>by {{ cocktail.creator }}</h2>
+    <h2>by <a href="{% url "cocktails:profile" cocktail.creator.id %}">{{ cocktail.creator }}</a></h2>
     {% if user == cocktail.creator or user.is_superuser %}
         <span><a href="{% url "cocktails:cocktail-update" cocktail.id %}">edit</a></span>
         <span><a href="{% url "cocktails:cocktail-delete" cocktail.id %}">delete</a></span>

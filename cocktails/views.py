@@ -39,14 +39,24 @@ class AToZ(ListView):
         return Cocktail.objects.all().order_by(Lower("name"))
 
 
-class IngredientsDetailView(DetailView):
+class CocktailsDetailView(DetailView):
     model = Cocktail
     template_name = "cocktails/detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(IngredientsDetailView, self).get_context_data(**kwargs)
+        context = super(CocktailsDetailView, self).get_context_data(**kwargs)
         context["ingredients"] = Ingredient.objects.filter(cocktails=self.object.id)
         return context
+
+
+class UserProfileView(View):
+    template_name = "cocktails/user-profile.html"
+
+    def get(self, request, id):
+        return render(request, template_name=self.template_name, context={
+            "cocktails": Cocktail.objects.filter(creator=id),
+            "other_user": User.objects.filter(pk=id).first()
+        })
 
 
 # Cocktail creating and updating and stuff
@@ -150,12 +160,3 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect("cocktails:index")
-
-
-class ProfileView(DetailView):
-    model = User
-    context_object_name = "user"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
-        return context

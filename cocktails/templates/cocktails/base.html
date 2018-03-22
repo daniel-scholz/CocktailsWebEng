@@ -30,7 +30,7 @@
             <div class="nav-item">
                 <a href="#">Shopping List </a>
             </div>
-            <div class="nav-item "><a href="#   ">{{ user }}</a></div>
+            <div class="nav-item "><a href="{% url "cocktails:profile" user.id %}">{{ user }}</a></div>
             <div class="nav-item logout">
                 <a href="{% url "cocktails:logout" %}">Logout</a>
             </div>
