@@ -5,61 +5,49 @@
 
 body {
   background: url("img/bar_background.jpg") no-repeat fixed;
-  background-size: cover; }
-
-.navbar {
+  background-size: cover;
+  position: fixed;
   width: 100%;
-  display: inline-flex;
-  justify-content: space-between;
-  background: lightpink; }
-  .navbar .nav-part {
-    display: inline-flex; }
-    .navbar .nav-part .nav-item {
-      margin: 0 5px;
-      padding: 5px 10px; }
-      .navbar .nav-part .nav-item a {
-        text-decoration: none; }
-      .navbar .nav-part .nav-item:hover {
-        background: #eba6af; }
-        .navbar .nav-part .nav-item:hover a {
-          color: white; }
-        .navbar .nav-part .nav-item:hover:active {
-          background: #cb8e9a; }
-
-.content-wrapper {
-  display: flex;
-  justify-content: center; }
-  .content-wrapper .content {
-    background: rgba(255, 255, 255, 0.8);
-    margin: 10px 0;
-    border: 1px solid black;
-    width: 75%;
-    height: 500px;
-    position: relative;
-    padding: 10px 20px; }
-    .content-wrapper .content .cocktails-list {
-      padding: 10px; }
-      .content-wrapper .content .cocktails-list li {
-        font-size: 1.5rem;
-        margin: 5px; }
-    .content-wrapper .content .add {
-      position: absolute;
-      margin: auto;
-      height: 3em;
-      width: 3em;
-      bottom: 0;
-      right: 0;
+  height: 100%; }
+  body .content-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100%; }
+    body .content-wrapper .content {
+      background: rgba(255, 255, 255, 0.8);
+      margin: 10px 0;
       border: 1px solid black;
-      background-color: greenyellow;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center; }
-      .content-wrapper .content .add .plus {
-        text-decoration: none;
-        font-size: 2.5em; }
-    .content-wrapper .content .disabled {
-      background-color: darkslategrey !important; }
-      .content-wrapper .content .disabled .plus {
-        cursor: default; }
+      width: 75%;
+      height: 75%;
+      position: relative;
+      padding: 10px 20px; }
+      body .content-wrapper .content .cocktails-list {
+        padding: 10px; }
+        body .content-wrapper .content .cocktails-list li {
+          font-size: 1.5rem;
+          margin: 5px; }
+      body .content-wrapper .content .cotd {
+        background-color: #fff; }
+      body .content-wrapper .content .add {
+        box-sizing: border-box;
+        position: absolute;
+        margin: auto;
+        height: 3em;
+        width: 3em;
+        bottom: 5px;
+        right: 5px;
+        background-color: greenyellow;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center; }
+        body .content-wrapper .content .add .plus {
+          text-decoration: none;
+          font-size: 2.5em; }
+        body .content-wrapper .content .add:hover {
+          border: 1px solid #6e9919; }
+      body .content-wrapper .content .disabled {
+        background-color: darkslategrey !important; }
+        body .content-wrapper .content .disabled .plus {
+          cursor: default; }
 
 /*# sourceMappingURL=style.css.map */

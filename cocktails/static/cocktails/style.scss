@@ -8,79 +8,66 @@
 body {
   background: url("img/bar_background.jpg") no-repeat fixed;
   background-size: cover;
-
-}
-
-.navbar {
+  position: fixed;
   width: 100%;
-  display: inline-flex;
-  justify-content: space-between;
-  background: lightpink;
-  .nav-part {
-    display: inline-flex;
-    .nav-item {
-      margin: 0 5px;
-      padding: 5px 10px;
+  height: 100%;
 
-      a {
-        text-decoration: none;
-      }
-      &:hover {
-        a {
-          color: white;
-        }
-        background: #eba6af;
-        &:active {
-          background: #cb8e9a;
-        }
-      }
-    }
-  }
-}
+  .content-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100%;
 
-.content-wrapper {
-  display: flex;
-  justify-content: center;
-  .content {
-    background: rgba(255, 255, 255, 0.8);
-    margin: 10px 0;
-    border: 1px solid black;
-    width: 75%;
-    height: 500px;
-    position: relative;
-    padding: 10px 20px;
-
-    .cocktails-list {
-      padding: 10px;
-      li {
-        font-size: 1.5rem;
-        margin: 5px;
-      }
-    }
-    .add {
-      position: absolute;
-      margin: auto;
-      height: 3em;
-      width: 3em;
-
-      bottom: 0;
-      right: 0;
+    .content {
+      background: rgba(255, 255, 255, 0.8);
+      margin: 10px 0;
       border: 1px solid black;
+      width: 75%;
+      height: 75%;
+      position: relative;
+      padding: 10px 20px;
 
-      background-color: greenyellow;
-      border-radius: 50%;
+      .cocktails-list {
+        padding: 10px;
 
-      display: flex;
-      justify-content: center;
-      .plus {
-        text-decoration: none;
-        font-size: 2.5em;
+        li {
+          font-size: 1.5rem;
+          margin: 5px;
+        }
       }
-    }
-    .disabled {
-      background-color: darkslategrey !important;
-      .plus {
-        cursor: default;
+
+      .cotd {
+        background-color: #fff;
+      }
+
+      .add {
+        box-sizing: border-box;
+        position: absolute;
+        margin: auto;
+        height: 3em;
+        width: 3em;
+
+        bottom: 5px;
+        right: 5px;
+
+        background-color: rgb(173, 255, 47);
+        border-radius: 50%;
+
+        display: flex;
+        justify-content: center;
+
+        .plus {
+          text-decoration: none;
+          font-size: 2.5em;
+        }
+        &:hover {
+          border: 1px solid rgb(110, 153, 25);
+        }
+      }
+      .disabled {
+        background-color: darkslategrey !important;
+        .plus {
+          cursor: default;
+        }
       }
     }
   }

@@ -2,10 +2,16 @@
 {% block title %} Home {% endblock %}
 {% block body %}
 
-    {% if all_cocktails %}
-        {{ all_cocktails.first }}
+    {% if  all_cocktails %}
+        <div class="cotd">
+            <h1>
+                {{ all_cocktails.first }}
+            </h1>
+            <img alt="The delicious {{ all_cocktails.first.name }}" src="/media/{{ all_cocktails.first.picture }}">
+        </div>
+        <h3>Construction area...</h3>
 
     {% else %}
-        <h3>Construction area...</h3>
+        <h2>nothin looool</h2>
     {% endif %}
 {% endblock %}

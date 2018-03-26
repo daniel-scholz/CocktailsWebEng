@@ -1,4 +1,5 @@
 # Create your views here.
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,10 +9,10 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from extra_views import InlineFormSet
 
-from .forms import LoginForm, RegisterForm, CocktailForm
+from .forms import LoginForm, RegisterForm, CocktailForm, IngredientForm
 from .models import Cocktail, Ingredient
 
 
@@ -20,6 +21,11 @@ class IndexView(ListView):
     context_object_name = 'all_cocktails'
 
     def get_queryset(self):
+        """query_set = QuerySet()
+        query_set += Cocktail.objects.all()
+        query_set += Cocktail.objects.get(pk=random.random(len(Cocktail.objects.all())))
+        return query_set
+"""
         return Cocktail.objects.all()
 
 
@@ -45,7 +51,7 @@ class CocktailsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CocktailsDetailView, self).get_context_data(**kwargs)
-        context["ingredients"] = Ingredient.objects.filter(cocktails=self.object.id)
+        context["ingredients"] = Ingredient.objects.filter(cocktail=self.object.id)
         return context
 
 
@@ -66,27 +72,42 @@ class IngredientInline(InlineFormSet):
 
 
 @method_decorator(login_required, name='dispatch')
-class CocktailCreate(View):
+class CocktailCreate(CreateView):
     form_class = CocktailForm
     template_name = "cocktails/cocktail_form.html"
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-        # picture = request.POST["picture"]
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             cocktail = form.save(commit=False)
-            print(cocktail.picture)
+            ingredients = []
+            for i in request.POST.getlist("ingredients"):
+                ingredients.append(Ingredient.objects.get(pk=i))
             cocktail.creator = request.user
-
             form.save()
-            # return redirect("cocktails:index")
+            cocktail.ingredient_set.set(ingredients)
             return redirect("cocktails:detail", cocktail.id)
 
         return render(request, self.template_name, {"form": form})
 
-    def get(self, request):
-        form = self.form_class(None)
+
+class IngredientCreate(CreateView):
+    form_class = IngredientForm
+    template_name = "cocktails/cocktail_form.html"
+
+    def post(self, request, *args, **kwargs):
+        # print(request.POST)
+        # picture = request.POST["picture"]
+        form = self.form_class(request.POST, request.FILES)
+        print(form.clean())
+        if form.is_valid() and form.clean():
+            ingredient = form.save(commit=False)
+            # ingredient.ingredient_set = Ingredient.objects.filter(ingredient=ingredient)
+
+            form.save()
+            cocktail = Cocktail.objects.get(pk=ingredient.cocktail.id)
+            return redirect("cocktails:detail", cocktail.id)
+
         return render(request, self.template_name, {"form": form})
 
 

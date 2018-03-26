@@ -9,7 +9,7 @@ from django.urls import reverse
 
 class Cocktail(models.Model):
     name = models.CharField(max_length=250, unique=True)
-    picture = models.FileField()
+    picture = models.ImageField()
     drunk_scale = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
     taste_scale = models.IntegerField(default=0)
     creator = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -23,12 +23,10 @@ class Cocktail(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=250)
-
-    weight = models.FloatField(null=True)
-    quantity = models.FloatField(null=True)
-    volume = models.FloatField(null=True)
-
-    cocktails = models.ForeignKey(Cocktail, null=True, on_delete=models.CASCADE)
+    weight = models.FloatField(null=True, blank=True)
+    quantity = models.FloatField(null=True, blank=True)
+    volume = models.FloatField(null=True, blank=True)
+    cocktail = models.ForeignKey(Cocktail, null=True, blank=True, on_delete=models.CASCADE)
     is_alcohol = models.BooleanField(default=False)
 
     def __str__(self):

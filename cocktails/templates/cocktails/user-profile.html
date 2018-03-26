@@ -1,5 +1,5 @@
 {% extends "cocktails/base.html" %}
-
+{% block title %} {{ user.username }}{% endblock %}
 {% block body %}
     <h1> {{ other_user }}</h1>
     <h2>Look what I've created:</h2>
@@ -11,6 +11,8 @@
 
                 {% endfor %}
             </ul>
+        {% else %}
+            <h4>nothing. i am new and lazy!</h4>
         {% endif %}
     </div>
 {% endblock %}
