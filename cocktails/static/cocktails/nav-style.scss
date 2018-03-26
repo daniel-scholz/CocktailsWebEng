@@ -1,26 +1,26 @@
 .navbar {
-    width: 100%;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  background: lightpink;
+  .nav-part {
     display: inline-flex;
-    justify-content: space-between;
-    background: lightpink;
-    .nav-part {
-      display: inline-flex;
-      .nav-item {
-        margin: 0 5px;
-        padding: 5px 10px;
+    .nav-item {
+      margin: 0 5px;
+      padding: 5px 10px;
 
+      a {
+        text-decoration: none;
+      }
+      &:hover {
         a {
-          text-decoration: none;
+          color: white;
         }
-        &:hover {
-          a {
-            color: white;
-          }
-          background: #eba6af;
-          &:active {
-            background: #cb8e9a;
-          }
+        background: #eba6af;
+        &:active {
+          background: #cb8e9a;
         }
       }
     }
   }
+}
