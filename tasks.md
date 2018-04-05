@@ -6,7 +6,7 @@
  - implement shopping list
  - implement edit ingredients on cocktails
 
-##Styles 
+## Styles 
  - Homepage
  - details
  - lists
