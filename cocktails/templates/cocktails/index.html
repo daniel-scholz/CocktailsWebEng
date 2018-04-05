@@ -4,9 +4,7 @@
 
     {% if  all_cocktails %}
         <div class="cotd">
-            <h1>
-                {{ all_cocktails.first }}
-            </h1>
+            <h1> Cocktail of the day:{{ all_cocktails.first }}</h1>
             <img alt="The delicious {{ all_cocktails.first.name }}" src="/media/{{ all_cocktails.first.picture }}">
         </div>
         <h3>Construction area...</h3>

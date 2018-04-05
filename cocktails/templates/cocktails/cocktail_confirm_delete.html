@@ -2,7 +2,8 @@
 
 {% block body %}
     <form action="" method="post">{% csrf_token %}
-        <p>Are you sure you want to delete your fantastic cocktail <i>{{ object }}</i>?</p>
+        <p>Are you sure you want to delete your fantastic <i>{{ object }}</i>?</p>
         <input type="submit" value="Confirm"/>
+        <input type="submit" value="Abort"/>
     </form>
 {% endblock %}

@@ -6,7 +6,15 @@
 
 {% block body %}
     <h1>{{ cocktail }} </h1>
-    <h2>by <a href="{% url "cocktails:profile" cocktail.creator.id %}">{{ cocktail.creator }}</a></h2>
+    <h2>by
+        {% if user %}
+            <a href="{% url "cocktails:profile" cocktail.creator.id %}">
+                {{ cocktail.creator }}
+            </a>
+        {% else %}
+            <i>Unknown</i>
+        {% endif %}
+    </h2>
     {% if user == cocktail.creator or user.is_superuser %}
         <span><a href="{% url "cocktails:cocktail-update" cocktail.id %}">edit</a></span>
         <span><a href="{% url "cocktails:cocktail-delete" cocktail.id %}">delete</a></span>
@@ -21,7 +29,7 @@
     <ul class="ingredient-list">
         {% for i in ingredients %}
             <li>
-                {{ i.name }}: {{ i.quantity }}
+                {{ i.name }}: {{ i.amount}} {{ i.unit }}
                 {% if i.is_alcohol %}
                     <span>(alc.)</span>
                 {% endif %}

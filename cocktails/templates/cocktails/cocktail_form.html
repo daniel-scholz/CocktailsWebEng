@@ -5,7 +5,65 @@
 {% block body %}
     <form class="" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% include "cocktails/form_template.html" %}
+        <ul>
+            {% for f in form %}
+                {{ f.errors }}
+                <li>
+                    {{ f.label_tag }}
+                    {{ f }}
+                </li>
+            {% endfor %}
+        </ul>
+        <h3>Ingredient list</h3>
+        <div class="ingredient-list">
+
+        </div>
+        <button type="button" class="" onclick="f()">+
+        </button>
+        <br>
+        <input type="hidden" name="ingredient_counter" id="ingredient_counter">
         <button type="submit" class="">Drink!</button>
     </form>
+
+    <script>
+        ingredient_counter = 0
+
+        function f() {
+            let ingredient_list = document.getElementsByClassName(' ingredient-list')[0]
+            let ingredient_fields = ["ingredient_name", "amount", "unit", "is_alcohol"]
+            let new_ingredient = document.createElement("div")
+
+            function create_textfield(id) {
+                let text_field = document.createElement("input")
+                text_field.setAttribute("id", id)
+                text_field.setAttribute("name", field)
+                text_field.setAttribute("required", "")
+                if (field === "amount") text_field.setAttribute("type", "number")
+                else if (field === "is_alcohol") {
+                    text_field.removeAttribute("required")
+                    text_field.setAttribute("type", "checkbox")
+                }
+                return text_field;
+            }
+
+            for (field of ingredient_fields) {
+                const id = "id_" + field + ingredient_counter
+                let label = document.createElement("label")
+                label.setAttribute("for", id)
+                label.appendChild(document.createTextNode(field))
+
+                new_ingredient.setAttribute("class", "ingredient")
+                new_ingredient.setAttribute("style", "display:inline-block; margin: 5px 0;")
+
+                const text_field = create_textfield(id);
+
+                new_ingredient.appendChild(label)
+                new_ingredient.appendChild(text_field)
+                ingredient_list.appendChild(new_ingredient)
+            }
+            document.getElementById("ingredient_counter").setAttribute("value", ++ingredient_counter)
+            console.log(ingredient_counter)
+        }
+
+    </script>
 {% endblock %}

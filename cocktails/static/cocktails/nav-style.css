@@ -1,0 +1,20 @@
+.navbar {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  background: lightpink; }
+  .navbar .nav-part {
+    display: inline-flex; }
+    .navbar .nav-part .nav-item {
+      margin: 0 5px;
+      padding: 5px 10px; }
+      .navbar .nav-part .nav-item a {
+        text-decoration: none; }
+      .navbar .nav-part .nav-item:hover {
+        background: #eba6af; }
+        .navbar .nav-part .nav-item:hover a {
+          color: white; }
+        .navbar .nav-part .nav-item:hover:active {
+          background: #cb8e9a; }
+
+/*# sourceMappingURL=nav-style.css.map */

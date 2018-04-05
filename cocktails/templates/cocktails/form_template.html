@@ -1,5 +1,10 @@
-{% for f in form %}
-    {{ f.errors }}
-    {{ f.label_tag }}
-    {{ f }}
-{% endfor %}
+<ul>
+    {% for f in form %}
+        {{ f.errors }}
+        <li>
+            {{ f.label_tag }}
+            {{ f }}
+        </li>
+    {% endfor %}
+
+</ul>

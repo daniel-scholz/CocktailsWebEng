@@ -10,27 +10,24 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
-from extra_views import InlineFormSet
 
-from .forms import LoginForm, RegisterForm, CocktailForm, IngredientForm
+from .forms import LoginForm, RegisterForm, CocktailForm
 from .models import Cocktail, Ingredient
 
 
-class IndexView(ListView):
+class IndexView(View):
     template_name = "cocktails/index.html"
-    context_object_name = 'all_cocktails'
 
-    def get_queryset(self):
-        """query_set = QuerySet()
-        query_set += Cocktail.objects.all()
-        query_set += Cocktail.objects.get(pk=random.random(len(Cocktail.objects.all())))
-        return query_set
-"""
-        return Cocktail.objects.all()
+    def get(self, request):
+        cocktails = Cocktail.objects
+        return render(request, template_name=self.template_name, context={
+            "all_cocktails": cocktails.all(),
+            "cotd": cocktails.get(pk=1)
+        })
 
 
 class TopFiveView(ListView):
-    template_name = "cocktails/top-five.html"
+    template_name = "cocktails/top_five.html"
     context_object_name = "cocktails"
 
     def get_queryset(self):
@@ -56,19 +53,13 @@ class CocktailsDetailView(DetailView):
 
 
 class UserProfileView(View):
-    template_name = "cocktails/user-profile.html"
+    template_name = "cocktails/user_profile.html"
 
     def get(self, request, id):
         return render(request, template_name=self.template_name, context={
             "cocktails": Cocktail.objects.filter(creator=id),
             "other_user": User.objects.filter(pk=id).first()
         })
-
-
-# Cocktail creating and updating and stuff
-class IngredientInline(InlineFormSet):
-    model = Ingredient
-    fields = "__all__"
 
 
 @method_decorator(login_required, name='dispatch')
@@ -78,11 +69,18 @@ class CocktailCreate(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() and form.units_valid(request.POST.getlist("unit")):
             cocktail = form.save(commit=False)
             ingredients = []
-            for i in request.POST.getlist("ingredients"):
-                ingredients.append(Ingredient.objects.get(pk=i))
+            ingredient_counter = int(request.POST["ingredient_counter"])
+            for idx in range(ingredient_counter):
+                ing = Ingredient()
+                ing.name = request.POST.getlist("ingredient_name")[idx]
+                ing.unit = request.POST.getlist("unit")[idx]
+                ing.amount = float(request.POST.getlist("amount")[idx])
+                ing.is_alcohol = True if request.POST.getlist("is_alcohol") else False
+                ing.save()
+                ingredients.append(ing)
             cocktail.creator = request.user
             form.save()
             cocktail.ingredient_set.set(ingredients)
@@ -91,27 +89,9 @@ class CocktailCreate(CreateView):
         return render(request, self.template_name, {"form": form})
 
 
-class IngredientCreate(CreateView):
-    form_class = IngredientForm
-    template_name = "cocktails/cocktail_form.html"
-
-    def post(self, request, *args, **kwargs):
-        # print(request.POST)
-        # picture = request.POST["picture"]
-        form = self.form_class(request.POST, request.FILES)
-        print(form.clean())
-        if form.is_valid() and form.clean():
-            ingredient = form.save(commit=False)
-            # ingredient.ingredient_set = Ingredient.objects.filter(ingredient=ingredient)
-
-            form.save()
-            cocktail = Cocktail.objects.get(pk=ingredient.cocktail.id)
-            return redirect("cocktails:detail", cocktail.id)
-
-        return render(request, self.template_name, {"form": form})
-
-
 class CocktailUpdate(UpdateView):
+    slug_field = 'pk'
+    slug_url_kwarg = 'pk'
     model = Cocktail
     fields = ["name", "picture"]  # , "ingredient_set"]
 

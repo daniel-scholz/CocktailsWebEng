@@ -23,9 +23,8 @@ class Cocktail(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=250)
-    weight = models.FloatField(null=True, blank=True)
-    quantity = models.FloatField(null=True, blank=True)
-    volume = models.FloatField(null=True, blank=True)
+    amount = models.FloatField(default=0)
+    unit = models.CharField(max_length=10)
     cocktail = models.ForeignKey(Cocktail, null=True, blank=True, on_delete=models.CASCADE)
     is_alcohol = models.BooleanField(default=False)
 
