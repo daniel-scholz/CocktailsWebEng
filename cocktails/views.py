@@ -35,11 +35,21 @@ class TopFiveView(ListView):
 
 
 class AToZ(ListView):
-    template_name = "cocktails/a-to-z.html"
+    template_name = "cocktails/a_to_z.html"
     context_object_name = "cocktails"
 
     def get_queryset(self):
         return Cocktail.objects.all().order_by(Lower("name"))
+
+
+class ResultView(ListView):
+    template_name = "cocktails/search_results.html"
+    context_object_name = "cocktails"
+
+    def get(self, request, *args, **kwargs):
+        q = request.GET['q']
+        results = Cocktail.objects.filter(name__contains=q).order_by(Lower("name"))
+        return render(request, self.template_name, {"cocktails": results})
 
 
 class CocktailsDetailView(DetailView):
@@ -48,7 +58,8 @@ class CocktailsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CocktailsDetailView, self).get_context_data(**kwargs)
-        context["ingredients"] = Ingredient.objects.filter(cocktail=self.object.id)
+        context["ingredients"] = Ingredient.objects.filter(
+            cocktail=self.object.id)
         return context
 
 
@@ -68,17 +79,20 @@ class CocktailCreate(CreateView):
     template_name = "cocktails/cocktail_form.html"
 
     def post(self, request, *args, **kwargs):
+        # id = kwargs["pk"]
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid() and form.units_valid(request.POST.getlist("unit")):
             cocktail = form.save(commit=False)
             ingredients = []
-            ingredient_counter = int(request.POST["ingredient_counter"])
+            counter = request.POST["ingredient_counter"]
+            ingredient_counter = int(counter) if counter else 0
             for idx in range(ingredient_counter):
                 ing = Ingredient()
                 ing.name = request.POST.getlist("ingredient_name")[idx]
                 ing.unit = request.POST.getlist("unit")[idx]
                 ing.amount = float(request.POST.getlist("amount")[idx])
-                ing.is_alcohol = True if request.POST.getlist("is_alcohol") else False
+                ing.is_alcohol = True if request.POST.getlist(
+                    "is_alcohol") else False
                 ing.save()
                 ingredients.append(ing)
             cocktail.creator = request.user
@@ -89,11 +103,16 @@ class CocktailCreate(CreateView):
         return render(request, self.template_name, {"form": form})
 
 
+@method_decorator(login_required, name='dispatch')
 class CocktailUpdate(UpdateView):
-    slug_field = 'pk'
-    slug_url_kwarg = 'pk'
     model = Cocktail
-    fields = ["name", "picture"]  # , "ingredient_set"]
+    fields = ["name", "picture"]
+
+    def get(self, request, *args, **kwargs):
+        ingredients = Ingredient.objects.filter(cocktail_id=kwargs["pk"])
+        # print(ingredients)
+        # return render(request, self.form_class(), context)
+        return super(CocktailUpdate, self).get(request, args, kwargs)
 
 
 class CocktailDelete(DeleteView):
@@ -102,7 +121,6 @@ class CocktailDelete(DeleteView):
 
 
 # authentication stuff
-
 class UserFormView(View):
     form_class = RegisterForm
     template_name = "cocktails/registration_form.html"

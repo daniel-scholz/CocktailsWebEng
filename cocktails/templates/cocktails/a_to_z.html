@@ -1,12 +1,9 @@
 {% extends "cocktails/base.html" %}
+{% block title %} A to Z {% endblock %}
 {% block body %}
     <h1>Here you see every Cocktail</h1>
     {% if cocktails %}
-        <ul class="cocktails-list">
-            {% for c in cocktails %}
-                <li><a href="{% url "cocktails:detail" c.id %}"> {{ c.name }}</a></li>
-            {% endfor %}
-        </ul>
+        {% include "cocktails/basic_list.html" %}
     {% else %}
         <div>no top5 at da moment!</div>
     {% endif %}

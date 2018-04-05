@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from . import views
@@ -16,5 +15,6 @@ urlpatterns = [
     path('cocktail/<int:pk>/delete/', views.CocktailDelete.as_view(), name='cocktail-delete'),
     path("top5/", views.TopFiveView.as_view(), name="top-five"),
     path("a-to-z", views.AToZ.as_view(), name="a-to-z"),
-    path("profile/<int:id>/", views.UserProfileView.as_view(), name="profile")
+    path("profile/<int:id>/", views.UserProfileView.as_view(), name="profile"),
+    path("results", views.ResultView.as_view(), name="search-result")
 ]

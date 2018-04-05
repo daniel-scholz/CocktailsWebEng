@@ -1,11 +1,10 @@
 {% extends "cocktails/base.html" %}
-
-{% block title %}TOP5{% endblock %}
+{% block title %} Your search results{% endblock %}
 {% block body %}
-    <h1>Here you will see da top 5 cocktails!</h1>
+    <h1>Search results</h1>
     {% if cocktails %}
         {% include "cocktails/basic_list.html" %}
     {% else %}
-        <div>no top5 at da moment!</div>
+        <div>no results found!</div>
     {% endif %}
 {% endblock %}

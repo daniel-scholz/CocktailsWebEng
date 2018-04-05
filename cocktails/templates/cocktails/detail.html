@@ -29,7 +29,7 @@
     <ul class="ingredient-list">
         {% for i in ingredients %}
             <li>
-                {{ i.name }}: {{ i.amount}} {{ i.unit }}
+                {{ i.name }}: {{ i.amount }} {{ i.unit }}
                 {% if i.is_alcohol %}
                     <span>(alc.)</span>
                 {% endif %}

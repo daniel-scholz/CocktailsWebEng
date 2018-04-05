@@ -20,4 +20,4 @@ media/
 *.pyc
 
 #database
-db.sqlite3
+*.sqlite3

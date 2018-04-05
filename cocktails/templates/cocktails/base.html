@@ -20,9 +20,12 @@
 
 
     <div class=" nav-part right">
-        <label id="search" class="nav-item"> Search <!-- TODO add search icon-->
-            <input type="text">
-        </label>
+        <form method="get" action="results"><!-- TODO add search icon-->
+
+            {% csrf_token %}
+            <input type="text" placeholder="Search..." name="q">
+            <button type="submit">Search</button>
+        </form>
         {% if not user.is_authenticated %}
             <div class="nav-item login">
                 <a href="{% url "cocktails:login" %}">Log in/ Register</a>

@@ -27,22 +27,25 @@ class CocktailForm(ModelForm):
     # query_set = Ingredient.objects.order_by("name").values_list("name").distinct()
     # ingredients = forms.ModelMultipleChoiceField(queryset=query_set)
     class Meta:
-        model = Cocktail
-        fields = ['name', 'picture']  # , "ingredients"]  # TODO add , 'ingredient'] to Cocktail Creation Form
+        model = Cocktail  # , "ingredients"]  # TODO add , 'ingredient'] to Cocktail Creation Form
+        fields = ['name', 'picture']
 
     def units_valid(self, units) -> (bool, Optional[str]):
         valid_units = ["ml", "cl", "dl", "l", "stk"]
         check = False
+        if not units:
+            return True
         for u in units:
             check = False
             for v in valid_units:
                 if u.lower() == v:
                     check = True
                     break
-            if check == False:
+            if not check:
                 self.add_error("name",
                                ValueError(
-                                   "Allowed Units for ingredients are:" + valid_units.__str__().strip("[").strip("]")))
+                                   "Allowed Units for ingredients are: %s" % valid_units.__str__().strip("[").strip(
+                                       "]")))
                 return False
 
         return check
