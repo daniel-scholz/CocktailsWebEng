@@ -3,7 +3,6 @@
 # TODO
 ## Implementation
  1. implement edit ingredients on cocktails
-
  3. implement shopping list
  4. access management
  5. rating system
@@ -11,7 +10,7 @@
  7. add preparation steps
 
 ## Styles 
- - think of framework: materialze, bootstrap
+ - think of framework: materialize, bootstrap
  - Homepage
  - details
  - lists
@@ -20,9 +19,9 @@
  - create Docker container
 
 ## Optionals
- -
+ - auto completion on search field
 
 
 # Done
  - implement abort button
- 2. implement search function
+ - implement search function
