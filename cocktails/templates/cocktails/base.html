@@ -20,10 +20,10 @@
 
 
     <div class=" nav-part right">
-        <form method="get" action="results"><!-- TODO add search icon-->
+        <form method="get" action="{% url "cocktails:search-result" %}"><!-- TODO add search icon-->
 
             {% csrf_token %}
-            <input required type="text" placeholder="Search..." name="q">
+            <input required type=" text" placeholder="Search..." name="q">
             <button type="submit">Search</button>
         </form>
         {% if not user.is_authenticated %}
@@ -33,7 +33,7 @@
 
         {% else %}
             <div class="nav-item">
-                <a href="#">Shopping List </a>
+                <a href="{% url "cocktails:shopping-list" %}">Shopping List </a>
             </div>
             <div class="nav-item "><a href="{% url "cocktails:profile" user.id %}">{{ user }}</a></div>
             <div class="nav-item logout">

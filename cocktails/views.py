@@ -50,7 +50,33 @@ class ResultView(ListView):
         q = request.GET['q']
         results = Cocktail.objects.filter(name__contains=q).order_by(Lower("name"))
         q = " _ " if q == "" else q
-        return render(request, self.template_name, {"cocktails": results,"q": q})
+        return render(request, self.template_name, {"cocktails": results, "q": q})
+
+
+class ShoppingListView(View):
+    template_name = "cocktails/shopping-list.html"
+    context_object_name = "items"
+
+    def get(self, request):
+        return render(request, self.template_name, {"items": Ingredient.objects.filter(on_shopping_list=True)})
+
+    def post(self, request):
+        shopping_list = Ingredient.objects.filter(on_shopping_list=True).filter(cocktail=request.POST["cocktail"])
+        print(shopping_list)
+        for key in request.POST:
+            print(key, request.POST.getlist(key))
+            try:
+                ingredient = Ingredient.objects.get(pk=key)
+                ingredient.on_shopping_list = True
+                shopping_list = shopping_list.exclude(id=ingredient.id)
+                ingredient.save()
+            except:
+                print("%s is not found in ingredient database" % key)
+        for ingredient in shopping_list:
+            ingredient.on_shopping_list = False
+            ingredient.save()
+
+        return render(request, self.template_name, {"items": Ingredient.objects.filter(on_shopping_list=True)})
 
 
 class CocktailsDetailView(DetailView):

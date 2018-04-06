@@ -1,0 +1,17 @@
+{% extends "cocktails/base.html" %}
+{% block body %}
+    <h1>Your shopping list</h1>
+    {% if items %}
+        <ul>
+            {% for i in items %}
+                <li>    {{ i.name }}: {{ i.amount }} {{ i.unit }}
+                    {% if i.is_alcohol %}
+                        <span>(alc.)</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>no items!</h2>
+    {% endif %}
+{% endblock %}

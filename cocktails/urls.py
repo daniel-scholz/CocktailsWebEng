@@ -16,5 +16,7 @@ urlpatterns = [
     path("top5/", views.TopFiveView.as_view(), name="top-five"),
     path("a-to-z", views.AToZ.as_view(), name="a-to-z"),
     path("profile/<int:id>/", views.UserProfileView.as_view(), name="profile"),
-    path("results", views.ResultView.as_view(), name="search-result")
+    path("results", views.ResultView.as_view(), name="search-result"),
+    path("shopping_list", views.ShoppingListView.as_view(), name="shopping-list"),
+
 ]

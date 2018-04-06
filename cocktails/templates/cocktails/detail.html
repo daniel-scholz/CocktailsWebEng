@@ -26,17 +26,26 @@
         <h1>{{ error_message }}</h1>
     {% endif %}
 
-    <ul class="ingredient-list">
-        {% for i in ingredients %}
-            <li>
-                {{ i.name }}: {{ i.amount }} {{ i.unit }}
-                {% if i.is_alcohol %}
-                    <span>(alc.)</span>
-                {% endif %}
-            </li>
-            <br>
-        {% endfor %}
-    </ul>
+    <form method="post" action={% url "cocktails:shopping-list" %}>
+        {% csrf_token %}
+        <input type="hidden" name="cocktail" value="{{ cocktail.id }}">
+        <ul class="ingredient-list">
+            {% for i in ingredients %}
+                <li>
+                    <label for="{{ i }}">
+                        {{ i.name }}: {{ i.amount }} {{ i.unit }}
+
+                        {% if i.is_alcohol %}
+                            <span>(alc.)</span>
+                        {% endif %}
+                    </label>
+                    <input name="{{ i.id }}" type="checkbox" {% if i.on_shopping_list %}checked{% endif %}>
+                </li>
+                <br>
+            {% endfor %}
+        </ul>
+        <button type="submit">Put on your shopping list</button>
+    </form>
 {% endblock %}
 
 </html>
