@@ -23,7 +23,7 @@
         <form method="get" action="{% url "cocktails:search-result" %}"><!-- TODO add search icon-->
 
             {% csrf_token %}
-            <input required type=" text" placeholder="Search..." name="q">
+            <input id="Search" formnovalidate required type="text" placeholder="Search..." name="q">
             <button type="submit">Search</button>
         </form>
         {% if not user.is_authenticated %}

@@ -58,7 +58,8 @@ class ShoppingListView(View):
     context_object_name = "items"
 
     def get(self, request):
-        return render(request, self.template_name, {"items": Ingredient.objects.filter(on_shopping_list=True)})
+        return render(request, self.template_name,
+                      {"items": Ingredient.objects.filter(on_shopping_list=True).order_by(Lower("name"))})
 
     def post(self, request):
         shopping_list = Ingredient.objects.filter(on_shopping_list=True).filter(cocktail=request.POST["cocktail"])
@@ -76,7 +77,7 @@ class ShoppingListView(View):
             ingredient.on_shopping_list = False
             ingredient.save()
 
-        return render(request, self.template_name, {"items": Ingredient.objects.filter(on_shopping_list=True)})
+        return redirect("cocktails:shopping-list")
 
 
 class CocktailsDetailView(DetailView):
