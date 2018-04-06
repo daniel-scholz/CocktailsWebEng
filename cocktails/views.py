@@ -49,7 +49,8 @@ class ResultView(ListView):
     def get(self, request, *args, **kwargs):
         q = request.GET['q']
         results = Cocktail.objects.filter(name__contains=q).order_by(Lower("name"))
-        return render(request, self.template_name, {"cocktails": results})
+        q = " _ " if q == "" else q
+        return render(request, self.template_name, {"cocktails": results,"q": q})
 
 
 class CocktailsDetailView(DetailView):
@@ -108,11 +109,19 @@ class CocktailUpdate(UpdateView):
     model = Cocktail
     fields = ["name", "picture"]
 
+    # form_class = CocktailForm
+
     def get(self, request, *args, **kwargs):
-        ingredients = Ingredient.objects.filter(cocktail_id=kwargs["pk"])
-        # print(ingredients)
+        kwargs["ing"] = Ingredient.objects.filter(cocktail_id=kwargs["pk"])
+        print(kwargs)
         # return render(request, self.form_class(), context)
         return super(CocktailUpdate, self).get(request, args, kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(CocktailUpdate, self).get_context_data(**kwargs)
+        context["ingredients"] = Ingredient.objects.filter(
+            cocktail=self.object.id)
+        return context
 
 
 class CocktailDelete(DeleteView):
