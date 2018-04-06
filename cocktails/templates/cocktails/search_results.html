@@ -1,7 +1,7 @@
 {% extends "cocktails/base.html" %}
 {% block title %} Your search results{% endblock %}
 {% block body %}
-    <h1>Search results</h1>
+    <h1>Search results for <i>{{ q }} </i></h1>
     {% if cocktails %}
         {% include "cocktails/basic_list.html" %}
     {% else %}
