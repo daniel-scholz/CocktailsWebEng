@@ -3,7 +3,7 @@
 # TODO
 ## Implementation
  1. implement edit ingredients on cocktails
- 3. implement shopping list
+ 2. make shopping list editable
  4. access management
  5. rating system
  6. calculate drunk rating
@@ -25,3 +25,4 @@
 # Done
  - implement abort button
  - implement search function
+ - implement shopping list
