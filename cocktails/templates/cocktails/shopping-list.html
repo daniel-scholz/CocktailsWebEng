@@ -2,16 +2,45 @@
 {% block body %}
     <h1>Your shopping list</h1>
     {% if items %}
-        <ul>
-            {% for i in items %}
-                <li>    {{ i.name }}: {{ i.amount }} {{ i.unit }}
-                    {% if i.is_alcohol %}
-                        <span>(alc.)</span>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+
+        <form method="post" id="shopping-list-form" action={% url "cocktails:shopping-list" %}>
+            {% csrf_token %}
+            <input type="hidden" name="cocktail" value="{{ cocktail.id }}">
+            <ul id="shopping-list-id" class="shopping-list">
+                {% for i in items %}
+                    <li>
+                        <label for="{{ i.id }}">
+                            {{ i.id }}|{{ i.name }}: {{ i.amount }} {{ i.unit }}
+                            {% if i.is_alcohol %}
+                                <span>(alc.)</span>
+                            {% endif %}
+
+                            in <i>{{ i.cocktail }}</i>
+                        </label>
+                        <input class="check-fields" id="{{ i.id }}" name="{{ i.id }}" type="checkbox" checked hidden>
+                        <input class="remove-button" id="{{ i.id }}" name="{{ i.id }}" type="button" value="Remove">
+                    </li>
+                    <br>
+                {% endfor %}
+            </ul>
+            <!--<button type="submit">Put on your shopping list</button>-->
+        </form>
     {% else %}
         <h2>no items!</h2>
     {% endif %}
+    <script>
+        window.onload = function () {
+            console.log("script ready");
+            for (node of document.getElementsByClassName("remove-button")) {
+                //console.log(node);
+                node.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.getElementById(this.id).removeAttribute("checked");
+                    document.getElementById("shopping-list-form").submit();
+                    //console.log("removed: ", this.id)
+                });
+            }
+        }
+
+    </script>
 {% endblock %}

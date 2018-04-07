@@ -62,8 +62,11 @@ class ShoppingListView(View):
                       {"items": Ingredient.objects.filter(on_shopping_list=True).order_by(Lower("name"))})
 
     def post(self, request):
-        shopping_list = Ingredient.objects.filter(on_shopping_list=True).filter(cocktail=request.POST["cocktail"])
-        print(shopping_list)
+        shopping_list = Ingredient.objects.filter(on_shopping_list=True)
+        if request.POST["cocktail"]:
+            shopping_list = shopping_list.filter(cocktail=request.POST["cocktail"])
+
+        print("shopping list:", shopping_list)
         for key in request.POST:
             print(key, request.POST.getlist(key))
             try:
