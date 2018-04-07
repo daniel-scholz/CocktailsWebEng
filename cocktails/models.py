@@ -10,8 +10,8 @@ from django.urls import reverse
 class Cocktail(models.Model):
     name = models.CharField(max_length=250, unique=True)
     picture = models.ImageField()
-    drunk_scale = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
-    taste_scale = models.IntegerField(default=0)
+    drunk_rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    taste_rating = models.IntegerField(default=0)
     creator = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
