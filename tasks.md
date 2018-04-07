@@ -1,9 +1,8 @@
 # Here you will see all tasks that are already done or will be done
 
-# TODO
+# TODOs
 ## Implementation
  1. implement edit ingredients on cocktails
- 2. make shopping list editable
  4. access management
  5. rating system
  6. calculate drunk rating
@@ -20,7 +19,6 @@
 
 ## Optionals
  - auto completion on search field
-
 
 # Done
  - implement abort button
