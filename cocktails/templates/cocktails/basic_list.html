@@ -1,5 +1,11 @@
 <ol class="cocktails-list">
     {% for c in cocktails %}
-        <li><a href="{% url "cocktails:detail" c.id %}"> {{ c.name }}</a></li>
+        <li>
+            <div>
+                <a href="{% url "cocktails:detail" c.id %}"> {{ c.name }}</a>
+            </div>
+            <div>Drunk: {{ c.drunk_rating }}</div>
+            <div>Taste: {{ c.taste_rating }}</div>
+        </li>
     {% endfor %}
 </ol>

@@ -6,12 +6,16 @@ from django.urls import reverse
 
 # Create your models here.
 
+def get_drunk_rating(cocktail) -> int:
+    print(cocktail.ingredient_set.filter("unit", contains="l"))
+    return 1
+
 
 class Cocktail(models.Model):
     name = models.CharField(max_length=250, unique=True)
     picture = models.ImageField()
-    drunk_rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
-    taste_rating = models.IntegerField(default=0)
+    drunk_rating = models.FloatField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    taste_rating = models.FloatField(default=0, )
     creator = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
@@ -30,4 +34,4 @@ class Ingredient(models.Model):
     on_shopping_list = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%d %s" % (self.id, self.name)
+        return "%d %s in %s"  % (self.id, self.name, self.cocktail)

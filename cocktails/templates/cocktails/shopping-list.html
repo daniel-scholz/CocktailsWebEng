@@ -32,7 +32,7 @@
         window.onload = function () {
             console.log("script ready");
             for (node of document.getElementsByClassName("remove-button")) {
-                //console.log(node);
+                console.log(node);
                 node.addEventListener('click', function (e) {
                     e.preventDefault();
                     document.getElementById(this.id).removeAttribute("checked");

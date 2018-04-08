@@ -31,7 +31,11 @@ class TopFiveView(ListView):
     context_object_name = "cocktails"
 
     def get_queryset(self):
-        return Cocktail.objects.all().order_by("drunk_scale")[:5]
+        if self.request.GET.__contains__("sort_by") and self.request.GET["sort_by"] != "":
+            sort_param = self.request.GET["sort_by"]
+        else:
+            sort_param = "taste"
+        return Cocktail.objects.all().order_by("-%s_rating" % sort_param)[:5]
 
 
 class AToZ(ListView):
@@ -122,13 +126,37 @@ class CocktailCreate(CreateView):
                 ing.name = request.POST.getlist("ingredient_name")[idx]
                 ing.unit = request.POST.getlist("unit")[idx]
                 ing.amount = float(request.POST.getlist("amount")[idx])
-                ing.is_alcohol = True if request.POST.getlist(
-                    "is_alcohol") else False
+                ing.is_alcohol = True if request.POST.getlist("is_not_alcohol")[idx] == "0" else False
                 ing.save()
                 ingredients.append(ing)
             cocktail.creator = request.user
+
             form.save()
             cocktail.ingredient_set.set(ingredients)
+            alc_sum = 0
+            liq_sum = 0
+            ingredient_set = ingredients
+            for i in ingredient_set:
+                amount = i.amount
+                unit: str = i.unit
+                factor = unit.split("l")[0]
+                if factor == "m":
+                    scale = 0.001
+                elif factor == "c":
+                    scale = 0.01
+                elif factor == "d":
+                    scale = 0.1
+                else:
+                    scale = 1
+                amount *= scale
+                if i.is_alcohol:
+                    alc_sum += amount
+                liq_sum += amount
+            if liq_sum != 0:
+                cocktail.drunk_rating = (alc_sum / liq_sum) * 5
+            else:
+                cocktail.drunk_rating = 0
+            cocktail.save()
             return redirect("cocktails:detail", cocktail.id)
 
         return render(request, self.template_name, {"form": form})

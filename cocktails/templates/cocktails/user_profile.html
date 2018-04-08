@@ -4,13 +4,7 @@
     <h1> {{ other_user }}</h1>
     <h2>Look what I've created:</h2>
     <div class="cocktails-list">
-        {% if cocktails %}
-            <ul>
-                {% for c in cocktails %}
-                    <li><a href="{% url "cocktails:detail" c.id %}">{{ c.name }}</a></li>
-
-                {% endfor %}
-            </ul>
+        {% if cocktails %}{% include "cocktails/basic_list.html" %}
         {% else %}
             <h4>nothing. i am new and lazy!</h4>
         {% endif %}

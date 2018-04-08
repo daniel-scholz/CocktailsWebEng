@@ -42,7 +42,16 @@
                 else if (field === "is_alcohol") {
                     text_field.removeAttribute("required")
                     text_field.setAttribute("type", "checkbox")
+                    text_field.addEventListener("change", function (e) {
+                        e.preventDefault()
+                       let hidden_field = this.parentNode.childNodes[this.parentNode.childNodes.length - 1]
+                        if (hidden_field.getAttribute("value") == 1)
+                            hidden_field.setAttribute("value", 0)
+                        else
+                            hidden_field.setAttribute("value", 1)
+                    })
                 }
+
                 return text_field
             }
 
@@ -61,6 +70,14 @@
                 new_ingredient.appendChild(text_field)
                 ingredient_list.appendChild(new_ingredient)
             }
+
+            let is_not_alcohol = document.createElement("input")
+            is_not_alcohol.setAttribute("id", "id_hidden" + ingredient_counter)
+            is_not_alcohol.setAttribute("name", "is_not_alcohol")
+            is_not_alcohol.setAttribute("value", 1)
+
+            is_not_alcohol.setAttribute("hidden", "")
+            new_ingredient.appendChild(is_not_alcohol)
             document.getElementById("ingredient_counter").setAttribute("value", ++ingredient_counter)
             console.log(ingredient_counter)
         }

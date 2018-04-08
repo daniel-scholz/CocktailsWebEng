@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} | TastyNDrunk </title>
-    {% load staticfiles %}
+    {% load static %}
     <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'cocktails/style.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'cocktails/nav-style.css' %}"/>
-
+    {% block head %}{% endblock %}
 </head>
 <body>
 
