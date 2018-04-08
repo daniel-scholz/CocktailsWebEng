@@ -1,0 +1,24 @@
+.sort-options {
+  width: 100%;
+}
+
+.sort-options form {
+  display: inline-flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.sort-options form .option {
+  background: grey;
+  border-radius: 10%;
+  padding: 5px;
+}
+
+.sort-options form .option:hover {
+  cursor: pointer;
+}
+
+.sort-options form .selected {
+  border: 14px solid green;
+}
+/*# sourceMappingURL=top5.css.map */
