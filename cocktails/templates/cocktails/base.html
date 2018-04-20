@@ -1,50 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %} | TastyNDrunk </title>
     {% load static %}
+    <title>{% block title %}{% endblock %} | TastyNDrunk </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'cocktails/styles/style.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'cocktails/styles/nav-style.css' %}"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     {% block head %}{% endblock %}
 </head>
+
 <body>
-
 <nav class="navbar">
-    <div class="nav-part left">
-        <div id="icon" class="nav-item"><a href="{% url "cocktails:index" %}">TastyCocktails</a></div>
-        <div id="TOP5" class="nav-item"><a href="{% url "cocktails:top-five" %}">TOP 5</a></div>
-        <div id="" class="nav-item"><a href="{% url "cocktails:a-to-z" %}">A-Z</a></div>
+    <div id="" class="nav-part">
+        <div id="" class="nav-item home"><a href="{% url "cocktails:index" %}">TastyCocktails</a></div>
     </div>
-
-
-    <div class=" nav-part right">
-        <form method="get" action="{% url "cocktails:search-result" %}"><!-- TODO add search icon-->
-
+    <div class="nav-part">
+        <div id="TOP5" class="nav-item top5"><a href="{% url "cocktails:top-five" %}">TOP 5</a></div>
+        <div id="" class="nav-item a-to-z"><a href="{% url "cocktails:a-to-z" %}">A-Z</a></div>
+        <form class="nav-item search" method="get" action="{% url "cocktails:search-result" %}">
+            <!-- TODO add search icon-->
             {% csrf_token %}
-            <input id="Search" formnovalidate required type="text" placeholder="Search..." name="q">
-            <button type="submit">Search</button>
+            <input id="search" formnovalidate required type="text" placeholder="Search..." name="q">
+            <!-- <button type="submit">Search</button>-->
+            <i class="fas fa-search"></i>
         </form>
         {% if not user.is_authenticated %}
-            <div class="nav-item login">
-                <a href="{% url "cocktails:login" %}">Log in/ Register</a>
+            <div class="nav-item nav-user">
+                <a href="{% url "cocktails:user" %}">Log in/ Register</a>
             </div>
-
         {% else %}
-            <div class="nav-item">
-                <a href="{% url "cocktails:shopping-list" %}">Shopping List </a>
-            </div>
-            <div class="nav-item "><a href="{% url "cocktails:profile" user.id %}">{{ user }}</a></div>
-            <div class="nav-item logout">
-                <a href="{% url "cocktails:logout" %}">Logout</a>
+            <div class="nav-item nav-user">
+                <div class="nav-dropdown-wrapper">
+                    <a href="{% url "cocktails:profile" user.id %}">{{ user }}</a>
+                    <div class="nav-dropdown">
+                        <div class="nav-dropdown-item">
+                            <a href="{% url "cocktails:shopping-list" %}">Shopping List </a>
+                        </div>
+                        <div class="nav-dropdown-item ">
+                            <a href="{% url "cocktails:logout" %}">Logout</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         {% endif %}
     </div>
 </nav>
-
 <div class="content-wrapper">
-    <div class="content">{% block body %}{% endblock %}
+    <div class="content">
+        {% block body %}{% endblock %}
         <div class="add">
             <a class="plus" href="{% url "cocktails:cocktail-add" %}"
                title="Log in to add cocktail!">

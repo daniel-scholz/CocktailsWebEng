@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from cocktails.models import Cocktail
+from cocktails.models import Cocktail, Vote
 
 
 class RegisterForm(ModelForm):
@@ -15,7 +15,7 @@ class RegisterForm(ModelForm):
         fields = ['username', 'email', 'password']
 
 
-class LoginForm(ModelForm):
+class UserForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
@@ -51,14 +51,7 @@ class CocktailForm(ModelForm):
         return check
 
 
-"""
-class IngredientForm(ModelForm):
+class VoteForm(ModelForm):
     class Meta:
-        model = Ingredient
-        fields = ['name', 'weight', "quantity", "volume",
-                  "is_alcohol", "cocktail"]
-
-    def clean(self):
-        super(IngredientForm, self).clean()
-        return self.fields[2] or self.fields[3] or self.fields[1]
-"""
+        model = Vote
+        fields = ["voter", "cocktail", "is_upvote"]

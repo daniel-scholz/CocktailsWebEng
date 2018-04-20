@@ -10,8 +10,11 @@
     <div class="sort-options">
         <form method="get" class="option-form">
             <div class="option {% if request.GET.sort_by == "drunk" %} selected {% endif %}">Drunk</div>
-            <div class="option {% if request.GET.sort_by == "taste" or not request.GET.sort_by %} selected {% endif %}">
+            <div class="option {% if request.GET.sort_by == "taste" %} selected {% endif %}">
                 Taste
+            </div>
+            <div class="option {% if request.GET.sort_by == "latest" or not request.GET.sort_by %} selected {% endif %}">
+                Latest
             </div>
             <input hidden id="hidden-option" name="sort_by" value="{{ request.GET.sort_by }}">
         </form>

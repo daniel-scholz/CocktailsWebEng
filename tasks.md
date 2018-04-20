@@ -3,24 +3,29 @@
 # TODOs
 ## Implementation
  1. implement edit ingredients on cocktails
- 4. access management
- 5. rating system
- 6. calculate drunk rating
- 7. add preparation steps
-
+ 4.1 change login required to "logged in == creator" on edit view
+ 8. fix login/register form
+ 
 ## Styles 
- - think of framework: materialize, bootstrap
+ - fix navbar
  - Homepage
- - details
+ - index View
  - lists
+ - tooltips
  
 ## Abgabe
  - create Docker container
 
 ## Optionals
  - auto completion on search field
+ - implement ajax frontend
+ - add preparation steps
+
 
 # Done
  - implement abort button
  - implement search function
  - implement shopping list
+ - calculate drunk rating
+ - rating system
+ - access management

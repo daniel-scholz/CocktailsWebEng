@@ -1,4 +1,11 @@
 {% extends "cocktails/base.html" %}
+{% block title %}
+    Shopping List
+{% endblock %}
+{% block head %}
+    {% load static %}
+    <script src="{% static "cocktails/scripts/shopping.js" %}"></script>
+{% endblock %}
 {% block body %}
     <h1>Your shopping list</h1>
     {% if items %}
@@ -17,8 +24,10 @@
 
                             in <i>{{ i.cocktail }}</i>
                         </label>
-                        <input class="check-fields" id="{{ i.id }}" name="{{ i.id }}" type="checkbox" checked hidden>
-                        <input class="remove-button" id="{{ i.id }}" name="{{ i.id }}" type="button" value="Remove">
+                        <input class="check-field" id="{{ i.id }}" name="on_shopping_list" type="text" hidden
+                               value="{{ i.id }}:True">
+                        <input class="remove-button" id="{{ i.id }}" name="{{ i.id }}" type="submit" value="remove">
+
                     </li>
                     <br>
                 {% endfor %}
@@ -28,19 +37,4 @@
     {% else %}
         <h2>no items!</h2>
     {% endif %}
-    <script>
-        window.onload = function () {
-            console.log("script ready");
-            for (node of document.getElementsByClassName("remove-button")) {
-                console.log(node);
-                node.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.getElementById(this.id).removeAttribute("checked");
-                    document.getElementById("shopping-list-form").submit();
-                    //console.log("removed: ", this.id)
-                });
-            }
-        }
-
-    </script>
 {% endblock %}

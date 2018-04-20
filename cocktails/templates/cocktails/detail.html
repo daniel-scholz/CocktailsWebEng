@@ -3,9 +3,25 @@
 
 {% extends "cocktails/base.html" %}
 {% block title %}{{ cocktail.name }}{% endblock %}
-
+{% block head %}
+    {% load  static %}
+    <script src="{% static 'cocktails/scripts/detail.js' %}"></script>
+    <link rel="stylesheet" href="{% static "cocktails/styles/detail.css" %}" type="text/css">
+{% endblock %}
 {% block body %}
     <h1>{{ cocktail }} </h1>
+    <form class="vote-form {% if votable or not user.is_authenticated %} in{% endif %}active" method="post"
+            {% if not user.is_authenticated %} title="you must be logged in to vote"{% endif %}
+          action="{% url "cocktails:vote" cocktail.id %}">
+
+        {% csrf_token %}
+        <div class="vote-buttons">
+            <div class="arrow arrow-up {% if votable != "up" %}not-{% endif %}{% if votable %}voted{% endif %}"></div>
+            <div class="rating">{{ cocktail.taste_rating }}</div>
+            <div class="arrow arrow-down {% if votable != "down" %}not-{% endif %}{% if votable %}voted{% endif %}"></div>
+            <input hidden id="vote" class="vote" name="vote" type="text" value="">
+        </div>
+    </form>
     <h2>by
         {% if user %}
             <a href="{% url "cocktails:profile" cocktail.creator.id %}">
@@ -15,10 +31,6 @@
             <i>Unknown</i>
         {% endif %}
     </h2>
-    <div>
-        rated: {{ cocktail.taste_rating }}
-    </div>
-
     {% if user == cocktail.creator or user.is_superuser %}
         <span><a href="{% url "cocktails:cocktail-update" cocktail.id %}">edit</a></span>
         <span><a href="{% url "cocktails:cocktail-delete" cocktail.id %}">delete</a></span>
@@ -36,15 +48,19 @@
             <ul class="ingredient-list">
                 {% for i in ingredients %}
                     <li>
-                        <label for="{{ i }}">
+                        <label for="{{ i.id }}">
                             {{ i.name }}: {{ i.amount }} {{ i.unit }}
 
                             {% if i.is_alcohol %}
                                 <span>(alc.)</span>
                             {% endif %}
                         </label>
-                        <input name="{{ i.id }}" id="{{ i }}" type="checkbox"
-                               {% if i.on_shopping_list %}checked{% endif %}>
+                        <input class="check-field" name="{{ i.id }}" id="{{ i.id }}" type="checkbox"
+                               {% if i.on_shopping_list_of == request.user %}checked{% endif %}>
+
+                        <input hidden name="on_shopping_list" type="text" id="{{ i.id }}"
+                               value="{{ i.id }}:{% if  i.on_shopping_list_of == request.user %}True{% else %}False{% endif %}
+                        ">
                     </li>
                     <br>
                 {% endfor %}
