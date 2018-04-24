@@ -44,7 +44,8 @@ class CocktailForm(ModelForm):
             if not check:
                 self.add_error("name",
                                ValueError(
-                                   "Allowed Units for ingredients are: %s" % valid_units.__str__().strip("[")
+                                   "Allowed Units for ingredients are: %s" % valid_units.__str__().strip(
+                                       "[")
                                    .strip("]")))
                 return False
 

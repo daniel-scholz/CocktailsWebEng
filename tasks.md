@@ -3,11 +3,10 @@
 # TODOs
 ## Implementation
  1. implement edit ingredients on cocktails
- 4.1 change login required to "logged in == creator" on edit view
- 8. fix login/register form
+ 9. addCocktailView, make ingredients removable again
+ 10. check evulation criteria
  
 ## Styles 
- - fix navbar
  - Homepage
  - index View
  - lists
@@ -20,12 +19,18 @@
  - auto completion on search field
  - implement ajax frontend
  - add preparation steps
+ - optimize loading time
 
 
 # Done
+## bugs and funcitonality
  - implement abort button
  - implement search function
  - implement shopping list
  - calculate drunk rating
  - rating system
  - access management
+ - change login required to "logged in == creator" on edit view
+ - fix login/register form
+## style
+ - fix navbar

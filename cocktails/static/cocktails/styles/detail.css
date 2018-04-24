@@ -1,0 +1,51 @@
+.vote-form.inactive .vote-buttons .arrow:hover {
+  cursor: default;
+}
+
+.vote-form .vote-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+}
+
+.vote-form .vote-buttons .rating {
+  text-align: center;
+}
+
+.vote-form .vote-buttons .arrow-up {
+  margin-bottom: 2px;
+  border-bottom: 20px solid #abc;
+}
+
+.vote-form .vote-buttons .arrow-up.voted {
+  border-bottom: 20px solid #f00;
+}
+
+.vote-form .vote-buttons .arrow-up.not-voted {
+  border-bottom: 20px solid transparent !important;
+}
+
+.vote-form .vote-buttons .arrow-down {
+  border-top: 20px solid #abc;
+  margin-top: 2px;
+}
+
+.vote-form .vote-buttons .arrow-down.not-voted {
+  border-top: 20px solid transparent !important;
+}
+
+.vote-form .vote-buttons .arrow-down.voted {
+  border-top: 20px solid #f00;
+}
+
+.vote-form .vote-buttons .arrow {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+}
+
+.vote-form .vote-buttons .arrow:hover {
+  cursor: pointer;
+}
+/*# sourceMappingURL=detail.css.map */

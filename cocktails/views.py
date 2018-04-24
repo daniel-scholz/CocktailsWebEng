@@ -33,10 +33,11 @@ class TopFiveView(ListView):
 
     def get_queryset(self):
         if self.request.GET.__contains__("sort_by") and self.request.GET["sort_by"] != "":
-            sort_param = "-" + self.request.GET["sort_by"] + "_rating" if self.request.GET[
-                                                                              "sort_by"] != "latest" else "timestamp"
+            print(self.request.GET['sort_by'].lower())
+            sort_param = "timestamp" if self.request.GET['sort_by'].lower() == "fresh" else "-" + self.request.GET["sort_by"] + "_rating"
         else:
             sort_param = "timestamp"
+        
         return Cocktail.objects.all().order_by("%s" % sort_param)[:5]
 
 
@@ -72,7 +73,8 @@ class ShoppingListView(View):
 
     def post(self, request):
         # get shopping list of logged in user
-        shopping_list = Ingredient.objects.filter(on_shopping_list_of=request.user)
+        shopping_list = Ingredient.objects.filter(
+            on_shopping_list_of=request.user)
 
         print("shopping list:", shopping_list)
 
@@ -139,8 +141,10 @@ class CocktailCreate(CreateView):
                 ing.save()
                 ingredients.append(ing)
             cocktail.creator = request.user
-            cocktail.timestamp = datetime.date.today
-            form.save()
+            try:
+                form.save()
+            except (TypeError):
+                print(form)
             cocktail.ingredient_set.set(ingredients)
             alc_sum = 0
             liq_sum = 0
@@ -162,7 +166,7 @@ class CocktailCreate(CreateView):
                     alc_sum += amount
                 liq_sum += amount
             if liq_sum != 0:
-                cocktail.drunk_rating = (alc_sum / liq_sum) * 10
+                cocktail.drunk_rating = (alc_sum / liq_sum)
             else:
                 cocktail.drunk_rating = 0
             cocktail.save()

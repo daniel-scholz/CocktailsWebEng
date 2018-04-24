@@ -1,9 +1,7 @@
-import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
-
 
 # Create your models here.
 
@@ -14,7 +12,7 @@ class Cocktail(models.Model):
     drunk_rating = models.FloatField(default=0)
     taste_rating = models.IntegerField(default=0)
     creator = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    timestamp = models.DateField(default=datetime.date.today)
+    timestamp = models.DateField(auto_now_add=True)
 
     def get_absolute_url(self):
         return reverse("cocktails:detail", kwargs={'pk': self.pk})
@@ -27,9 +25,11 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=250)
     amount = models.FloatField(default=0)
     unit = models.CharField(max_length=10)
-    cocktail = models.ForeignKey(Cocktail, null=True, blank=True, on_delete=models.CASCADE)
+    cocktail = models.ForeignKey(
+        Cocktail, null=True, blank=True, on_delete=models.CASCADE)
     is_alcohol = models.BooleanField(default=False)
-    on_shopping_list_of = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    on_shopping_list_of = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "%d %s in %s" % (self.id, self.name, self.cocktail)

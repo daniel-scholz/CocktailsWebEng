@@ -6,32 +6,39 @@
 {% endblock %}
 {% block title %}TOP5{% endblock %}
 {% block body %}
-    <h1>Here you will see da top 5 cocktails!</h1>
-    <div class="sort-options">
-        <form method="get" class="option-form">
-            <div class="option {% if request.GET.sort_by == "drunk" %} selected {% endif %}">Drunk</div>
-            <div class="option {% if request.GET.sort_by == "taste" %} selected {% endif %}">
-                Taste
+    <div class="wrapper">
+        <div class="sort-options">
+            <form method="get" class="option-form">
+                <div class="option {% if request.GET.sort_by == "drunk" %} selected {% endif %}">
+                    <span class="option-text">Drunk</span> 
+                </div>
+                <div class="option {% if request.GET.sort_by == "taste" %} selected {% endif %}">
+                    <span class="option-text">Taste</span> 
+                </div>
+                <div class="option {% if request.GET.sort_by == "fresh" or not request.GET.sort_by %} selected {% endif %}">
+                    <span class="option-text">Fresh</span> 
+                </div>
+                <input hidden id="hidden-option" name="sort_by" value="{{ request.GET.sort_by }}">
+            </form>
+        </div>
+        {% if cocktails %}
+            <div class="cocktails-list">
+                {% for c in cocktails %}
+                    <div class="entry">
+                        <div class="img-wrapper">
+                                <img class="img" src="/media/{{ c.picture }}">
+                        </div>
+                       
+                        <div class="description">
+                            <h3 class="name"><a href="{% url "cocktails:detail" c.id %}"> {{ c.name }}</a></h3> 
+                            <div>Drunk: {% widthratio c.drunk_rating 1 100 %}%</div>
+                            <div>Taste: {{ c.taste_rating }}</div>        
+                        </div>
+                        </div>
+                {% endfor %}
             </div>
-            <div class="option {% if request.GET.sort_by == "latest" or not request.GET.sort_by %} selected {% endif %}">
-                Latest
-            </div>
-            <input hidden id="hidden-option" name="sort_by" value="{{ request.GET.sort_by }}">
-        </form>
-    </div>
-    {% if cocktails %}
-        <ol class="cocktails-list">
-            {% for c in cocktails %}
-                <li>
-                    <div>
-                        <a href="{% url "cocktails:detail" c.id %}"> {{ c.name }}</a>
-                    </div>
-                    <div>Drunk: {{ c.drunk_rating }}</div>
-                    <div>Taste: {{ c.taste_rating }}</div>
-                </li>
-            {% endfor %}
-        </ol>
-    {% else %}
-        <div>no top5 at da moment!</div>
-    {% endif %}
+        {% else %}
+            <div>no top5 at da moment!</div>
+        {% endif %}
+    </div>    
 {% endblock %}

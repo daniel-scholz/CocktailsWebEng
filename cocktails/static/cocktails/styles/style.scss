@@ -4,12 +4,18 @@
   padding: 0;
 }
 
-body, h1, h2, h3, h4, h5, h6 {
-  font-family: "Karma", sans-serif
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Karma", sans-serif;
 }
 
 .w3-bar-block .w3-bar-item {
-  padding: 20px
+  padding: 20px;
 }
 
 body {
@@ -23,34 +29,23 @@ body {
     display: flex;
     justify-content: center;
     height: 100%;
+    position: relative;
+    z-index: 1;
 
     .content {
       background: rgba(255, 255, 255, 0.8);
       margin: 10px 0;
       border: 1px solid black;
-      width: 75%;
-      height: 75%;
+      width: 90%;
       position: relative;
-      padding: 10px 20px;
-
-      .cocktails-list {
-        height: 90%;
-        padding: 10px;
-        overflow: auto;
-
-        li {
-          font-size: 1.5rem;
-          margin: 5px;
-        }
-      }
-
+      overflow-y: auto;
       .cotd {
         background-color: #fff;
       }
 
       .add {
         box-sizing: border-box;
-        position: absolute;
+        position: sticky;
         margin: auto;
         height: 3em;
         width: 3em;
@@ -80,5 +75,4 @@ body {
       }
     }
   }
-
 }
