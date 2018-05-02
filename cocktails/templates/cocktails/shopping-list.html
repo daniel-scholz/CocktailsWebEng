@@ -1,40 +1,33 @@
-{% extends "cocktails/base.html" %}
-{% block title %}
-    Shopping List
-{% endblock %}
-{% block head %}
-    {% load static %}
-    <script src="{% static "cocktails/scripts/shopping.js" %}"></script>
-{% endblock %}
-{% block body %}
-    <h1>Your shopping list</h1>
-    {% if items %}
+{% extends "cocktails/base.html" %} {% block title %} Shopping List {% endblock %} {% block head %} {% load static %}
+<script src="{% static " cocktails/scripts/shopping.js " %}"></script> 
+<link href="{% static 'cocktails/styles/detail.css'%}" rel="stylesheet">
+<link href="{% static 'cocktails/styles/form.css'%}" rel="stylesheet">
 
-        <form method="post" id="shopping-list-form" action={% url "cocktails:shopping-list" %}>
-            {% csrf_token %}
-            <input type="hidden" name="cocktail" value="{{ cocktail.id }}">
-            <ul id="shopping-list-id" class="shopping-list">
-                {% for i in items %}
-                    <li>
-                        <label for="{{ i.id }}">
-                            {{ i.id }}|{{ i.name }}: {{ i.amount }} {{ i.unit }}
-                            {% if i.is_alcohol %}
-                                <span>(alc.)</span>
-                            {% endif %}
+{% endblock %} {% block body %}
+<div class="title-wrapper">
+        <h1 class="heading">Your shopping list</h1>
+</div>
+{% if items %}
 
-                            in <i>{{ i.cocktail }}</i>
-                        </label>
-                        <input class="check-field" id="{{ i.id }}" name="on_shopping_list" type="text" hidden
-                               value="{{ i.id }}:True">
-                        <input class="remove-button" id="{{ i.id }}" name="{{ i.id }}" type="submit" value="remove">
+<form method="post" id="shopping-list-form" action={% url "cocktails:shopping-list" %}>
+    {% csrf_token %}
+    <input type="hidden" name="cocktail" value="{{ cocktail.id }}">
+    <ul class="shopping-list ingredient-list" id="shopping-list-id" class="shopping-list">
+        {% for i in items %}
+        <li>
+            <input class="remove-btn btn" id="{{ i.id }}" name="{{ i.id }}" type="submit" value="-">
+            <label for="{{ i.id }}">{{ i.name }}: {{ i.amount }} {{ i.unit }} {% if i.is_alcohol %}
+                <span>(alc.)</span>
+                {% endif %} in
+                <i>{{ i.cocktail }}</i>
+            </label>
+            <input class="check-field" id="{{ i.id }}" name="on_shopping_list" type="text" hidden value="{{ i.id }}:True">
 
-                    </li>
-                    <br>
-                {% endfor %}
-            </ul>
-            <!--<button type="submit">Put on your shopping list</button>-->
-        </form>
-    {% else %}
-        <h2>no items!</h2>
-    {% endif %}
-{% endblock %}
+        </li>
+        {% endfor %}
+    </ul>
+    <!--<button type="submit">Put on your shopping list</button>-->
+</form>
+{% else %}
+<h2>no items!</h2>
+{% endif %} {% endblock %}

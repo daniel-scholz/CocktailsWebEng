@@ -20,24 +20,24 @@ class IndexView(View):
     template_name = "cocktails/index.html"
 
     def get(self, request):
-        cocktails = Cocktail.objects
+        cocktail = Cocktail.objects.get(name="Daniel is in fact making progress")
+        ingredients = Ingredient.objects.filter(cocktail=cocktail)
         return render(request, template_name=self.template_name, context={
-            "all_cocktails": cocktails.all(),
-            "cotd": cocktails.get(name="Daniel is in fact making progress")
+            "cocktail": cocktail, "ingredients": ingredients
         })
 
 
 class TopFiveView(ListView):
-    template_name = "cocktails/top_five.html"
+    template_name = "cocktails/top5.html"
     context_object_name = "cocktails"
 
     def get_queryset(self):
         if self.request.GET.__contains__("sort_by") and self.request.GET["sort_by"] != "":
-            print(self.request.GET['sort_by'].lower())
-            sort_param = "timestamp" if self.request.GET['sort_by'].lower() == "fresh" else "-" + self.request.GET["sort_by"] + "_rating"
+            sort_param = "timestamp" if self.request.GET['sort_by'].lower(
+            ) == "fresh" else "-" + self.request.GET["sort_by"] + "_rating"
         else:
             sort_param = "timestamp"
-        
+
         return Cocktail.objects.all().order_by("%s" % sort_param)[:5]
 
 
@@ -45,8 +45,12 @@ class AToZ(ListView):
     template_name = "cocktails/a_to_z.html"
     context_object_name = "cocktails"
 
-    def get_queryset(self):
-        return Cocktail.objects.all().order_by(Lower("name"))
+    def get_queryset(self, ):
+        if self.request.GET.__contains__("sort_by") and self.request.GET["sort_by"] != "":
+            letter = self.request.GET["sort_by"]
+        else:
+            letter = 'a'
+        return Cocktail.objects.filter(name__startswith=letter).order_by(Lower("name"))
 
 
 class ResultView(ListView):
@@ -57,6 +61,8 @@ class ResultView(ListView):
         q = request.GET['q']
         results = Cocktail.objects.filter(
             name__contains=q).order_by(Lower("name"))
+        if len(results) == 1:
+            return redirect("cocktails:detail", results[0].id)
         q = " _ " if q == "" else q
         return render(request, self.template_name, {"cocktails": results, "q": q})
 
@@ -67,27 +73,23 @@ class ShoppingListView(View):
     context_object_name = "items"
 
     def get(self, request):
-        print(Ingredient.objects.filter(on_shopping_list_of=request.user))
         return render(request, self.template_name,
-                      {"items": Ingredient.objects.filter(on_shopping_list_of=request.user).order_by(Lower("name"))})
+                      {"items": Ingredient.objects.filter(on_shopping_list_of=request.user).order_by(
+                          Lower("cocktail"))})
 
     def post(self, request):
         # get shopping list of logged in user
         shopping_list = Ingredient.objects.filter(
             on_shopping_list_of=request.user)
 
-        print("shopping list:", shopping_list)
-
         for item in request.POST.getlist("on_shopping_list"):
             try:
                 key, value = item.split(":")
-                print(key, value)
                 ingredient = Ingredient.objects.get(pk=key)
                 ingredient.on_shopping_list_of = request.user if "True" == value else None
                 ingredient.save()
             except:
-                print("%s is not found in ingredient database" % item)
-
+                pass
         return redirect("cocktails:shopping-list")
 
 
@@ -104,7 +106,6 @@ class CocktailsDetailView(DetailView):
             if self.request.user == vote.voter:
                 context["votable"] = "up" if vote.is_upvote else "down"
                 return context
-
         return context
 
 
@@ -141,17 +142,14 @@ class CocktailCreate(CreateView):
                 ing.save()
                 ingredients.append(ing)
             cocktail.creator = request.user
-            try:
-                form.save()
-            except (TypeError):
-                print(form)
+            form.save()
             cocktail.ingredient_set.set(ingredients)
             alc_sum = 0
             liq_sum = 0
             ingredient_set = ingredients
             for i in ingredient_set:
                 amount = i.amount
-                unit: str = i.unit
+                unit = i.unit
                 factor = unit.split("l")[0]
                 if factor == "m":
                     scale = 0.001
@@ -180,14 +178,9 @@ class CocktailUpdate(UpdateView):
     model = Cocktail
     fields = ["name", "picture"]
 
-    # form_class = CocktailForm
-
     def get(self, request, *args, **kwargs):
         if request.user == Cocktail.objects.get(pk=kwargs["pk"]).creator:
             kwargs["ing"] = Ingredient.objects.filter(cocktail_id=kwargs["pk"])
-            print(kwargs)
-            # return render(request, self.form_class(), context)
-
             return super(CocktailUpdate, self).get(request, args, kwargs)
 
         return redirect('cocktails:detail', kwargs["pk"])

@@ -10,12 +10,21 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+input {
   font-family: "Karma", sans-serif;
 }
 
 .w3-bar-block .w3-bar-item {
   padding: 20px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  &:visited {
+    color: black;
+  }
 }
 
 body {
@@ -38,20 +47,19 @@ body {
       border: 1px solid black;
       width: 90%;
       position: relative;
-      overflow-y: auto;
       .cotd {
         background-color: #fff;
       }
 
       .add {
         box-sizing: border-box;
-        position: sticky;
+        position: fixed;
         margin: auto;
         height: 3em;
         width: 3em;
 
-        bottom: 5px;
-        right: 5px;
+        bottom: 0px;
+        left: 0px;
 
         background-color: rgb(173, 255, 47);
         border-radius: 50%;

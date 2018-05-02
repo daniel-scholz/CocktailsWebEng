@@ -2,20 +2,9 @@
 {% block title %} Home {% endblock %}
 {% block body %}
 
-    {% if  all_cocktails %}
-        <div class="cotd">
-            <h1> Cocktail of the day:<i>{{ cotd }} </i></h1>
-            <a href="{% url "cocktails:detail" cotd.id %}">
-                <img alt="The delicious {{ cotd.name }}" src="/media/{{ cotd.picture }}">
-            </a>
-            <ul>
-                {% for foo in  cotd.ingredient_set.all %}
-                    <li> {{ foo }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <h3>Construction area...</h3>
-
+    {% if  cocktail %}
+        <h2>Cocktail of the day: <span style="font-style: italic;">{{ cocktail }}</span></h2>
+        {% include "cocktails/cocktail.html" %}
     {% else %}
         <h2>nothin.. looool</h2>
     {% endif %}

@@ -15,7 +15,6 @@
         text-align: center;
         width: 33.3333%;
         background: #ffff99;
-
         &:hover {
           cursor: pointer;
         }
@@ -25,50 +24,6 @@
       }
       .selected {
         border-bottom: 2px solid #ff8080;
-      }
-    }
-  }
-  .cocktails-list {
-    display: inline-flex;
-    justify-content: space-evenly;
-    align-content: stretch;
-    flex-wrap: wrap;
-    margin-top: 10px;
-    .entry {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: grey 0px 5px 10px;
-      padding:5px;
-      background: white;
-      //background: rgba(0, 255, 239, 0.5);
-      @media (min-width: 760px) {
-        max-width: 50%;
-      }
-      @media (min-width: 1200px) {
-        max-width: 20%;
-      }
-      .img-wrapper {
-        display: flex;
-        justify-content: center;
-        min-height: 80%;
-        img {
-          object-fit: contain;
-          max-width: 100%;
-        }
-      }
-      .description {
-        max-height: 20%;
-        .name {
-          text-align: center;
-          a {
-            text-decoration: none;
-            
-            &:visited {
-              color: black;
-            }
-          }
-        }
       }
     }
   }

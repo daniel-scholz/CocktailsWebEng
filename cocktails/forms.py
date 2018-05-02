@@ -26,6 +26,11 @@ class UserForm(ModelForm):
 class CocktailForm(ModelForm):
     # query_set = Ingredient.objects.order_by("name").values_list("name").distinct()
     # ingredients = forms.ModelMultipleChoiceField(queryset=query_set)
+    name = forms.CharField(label="name", widget=forms.TextInput(
+        attrs={'placeholder': 'Enter your cocktails name here..'}))
+    picture = forms.ImageField(label="picture")
+    #, widget=forms.FileInput(attrs={'onchange': 'readURL(this)'}))
+
     class Meta:
         model = Cocktail
         fields = ['name', 'picture']

@@ -25,7 +25,7 @@
       flex-direction: column;
       padding: 0px 10px;
       &.home {
-          font-weight: lighter;
+        font-weight: lighter;
       }
       &.search {
         display: flex;
@@ -44,7 +44,7 @@
           }
         }
         input {
-          transition: width 1s ease;
+          transition: width 1s ease-in;
           width: 0;
           background: transparent;
           border: none;

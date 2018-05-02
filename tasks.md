@@ -3,7 +3,6 @@
 # TODOs
 ## Implementation
  1. implement edit ingredients on cocktails
- 9. addCocktailView, make ingredients removable again
  10. check evulation criteria
  
 ## Styles 
@@ -21,7 +20,6 @@
  - add preparation steps
  - optimize loading time
 
-
 # Done
 ## bugs and funcitonality
  - implement abort button
@@ -32,5 +30,7 @@
  - access management
  - change login required to "logged in == creator" on edit view
  - fix login/register form
+ - addCocktailView, make ingredients removable again
+
 ## style
  - fix navbar

@@ -9,69 +9,32 @@
     <link rel="stylesheet" href="{% static "cocktails/styles/detail.css" %}" type="text/css">
 {% endblock %}
 {% block body %}
-    <h1>{{ cocktail }} </h1>
-    <form class="vote-form {% if votable or not user.is_authenticated %} in{% endif %}active" method="post"
-            {% if not user.is_authenticated %} title="you must be logged in to vote"{% endif %}
-          action="{% url "cocktails:vote" cocktail.id %}">
-
-        {% csrf_token %}
-        <div class="vote-buttons">
-            <div class="arrow arrow-up {% if votable != "up" %}not-{% endif %}{% if votable %}voted{% endif %}"></div>
-            <div class="rating">{{ cocktail.taste_rating }}</div>
-            <div class="arrow arrow-down {% if votable != "down" %}not-{% endif %}{% if votable %}voted{% endif %}"></div>
-            <input hidden id="vote" class="vote" name="vote" type="text" value="">
+    <div class="title-wrapper">
+        <div class="wrapper">
+            <h1 class="heading">{{ cocktail }} </h1>
+            <form class="vote-form {% if votable or not user.is_authenticated %} in{% endif %}active" method="post"
+                    {% if not user.is_authenticated %} title="you must be logged in to vote"{% endif %}
+                  action="{% url "cocktails:vote" cocktail.id %}">
+                {% csrf_token %}
+                <div class="vote-buttons">
+                    <div class="arrow arrow-up {% if votable != "up" %}not-{% endif %}{% if votable %}voted{% endif %}"></div>
+                    <div class="rating">{{ cocktail.taste_rating }}</div>
+                    <div class="arrow arrow-down {% if votable != "down" %}not-{% endif %}{% if votable %}voted{% endif %}"></div>
+                    <input hidden id="vote" class="vote" name="vote" type="text" value="">
+                </div>
+            </form>
         </div>
-    </form>
-    <h2>by
-        {% if user %}
-            <a href="{% url "cocktails:profile" cocktail.creator.id %}">
-                {{ cocktail.creator }}
-            </a>
-        {% else %}
-            <i>Unknown</i>
-        {% endif %}
-    </h2>
+        <h2 class="heading">by
+            {% if user %}
+                <a href="{% url "cocktails:profile" cocktail.creator.id %}">{{ cocktail.creator }}</a>
+            {% else %}<i>Unknown</i>
+            {% endif %}
+        </h2>
+    </div>
     {% if user == cocktail.creator or user.is_superuser %}
         <span><a href="{% url "cocktails:cocktail-update" cocktail.id %}">edit</a></span>
         <span><a href="{% url "cocktails:cocktail-delete" cocktail.id %}">delete</a></span>
     {% endif %}
-    <img alt="A picture of {{ cocktail.name }} " height="200px"
-         src="{{ cocktail.picture.url }}">
-
-    {% if error_message %}
-        <h1>{{ error_message }}</h1>
-    {% endif %}
-    {% if ingredients %}
-        <form method="post" action={% url "cocktails:shopping-list" %}>
-            {% csrf_token %}
-            <input type="hidden" name="cocktail" value="{{ cocktail.id }}">
-            <ul class="ingredient-list">
-                {% for i in ingredients %}
-                    <li>
-                        <label for="{{ i.id }}">
-                            {{ i.name }}: {{ i.amount }} {{ i.unit }}
-
-                            {% if i.is_alcohol %}
-                                <span>(alc.)</span>
-                            {% endif %}
-                        </label>
-                        <input class="check-field" name="{{ i.id }}" id="{{ i.id }}" type="checkbox"
-                               {% if i.on_shopping_list_of == request.user %}checked{% endif %}>
-
-                        <input hidden name="on_shopping_list" type="text" id="{{ i.id }}"
-                               value="{{ i.id }}:{% if  i.on_shopping_list_of == request.user %}True{% else %}False{% endif %}
-                        ">
-                    </li>
-                    <br>
-                {% endfor %}
-            </ul>
-            <button type="submit">Put on your shopping list</button>
-        </form>
-    {% else %}
-        <h2>
-            This cocktail consists of nothing but mere air and love!
-        </h2>
-    {% endif %}
+    {% include "cocktails/cocktail.html" %}
 {% endblock %}
-
 </html>

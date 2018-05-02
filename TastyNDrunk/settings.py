@@ -24,7 +24,7 @@ SECRET_KEY = 'xp7$-auuv^5+4_$odcib23_q*blc$rs+x$ke)kecwchgfbpqpj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "134.155.234.45"]
 
 # Application definition
 
@@ -53,8 +53,7 @@ ROOT_URLCONF = 'TastyNDrunk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
