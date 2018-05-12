@@ -5,14 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models.functions import Lower
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import UpdateView, DeleteView, CreateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import UserForm, RegisterForm, CocktailForm, VoteForm
+from .forms import CocktailForm, RegisterForm, UserForm, VoteForm
 from .models import Cocktail, Ingredient, Vote
 
 
@@ -20,10 +20,12 @@ class IndexView(View):
     template_name = "cocktails/index.html"
 
     def get(self, request):
-        cocktail = Cocktail.objects.get(name="Daniel is in fact making progress")
+        cocktail = Cocktail.objects.get(
+            name="Daniel is in fact making progress")
         ingredients = Ingredient.objects.filter(cocktail=cocktail)
         return render(request, template_name=self.template_name, context={
-            "cocktail": cocktail, "ingredients": ingredients
+            "cocktail": cocktail,
+            "ingredients": ingredients
         })
 
 
@@ -32,9 +34,9 @@ class TopFiveView(ListView):
     context_object_name = "cocktails"
 
     def get_queryset(self):
-        if self.request.GET.__contains__("sort_by") and self.request.GET["sort_by"] != "":
-            sort_param = "timestamp" if self.request.GET['sort_by'].lower(
-            ) == "fresh" else "-" + self.request.GET["sort_by"] + "_rating"
+        get_request = self.request.GET
+        if get_request.__contains__("sort_by") and get_request["sort_by"] != "" and get_request['sort_by'].lower() != "fresh":
+            sort_param = "-" + get_request["sort_by"] + "_rating"
         else:
             sort_param = "timestamp"
 
@@ -46,11 +48,13 @@ class AToZ(ListView):
     context_object_name = "cocktails"
 
     def get_queryset(self, ):
-        if self.request.GET.__contains__("sort_by") and self.request.GET["sort_by"] != "":
-            letter = self.request.GET["sort_by"]
+        get_request = self.request.GET
+        if get_request.__contains__("sort_by") and get_request["sort_by"] != "":
+            letter = get_request["sort_by"]
         else:
             letter = 'a'
-        return Cocktail.objects.filter(name__startswith=letter).order_by(Lower("name"))
+        cocktails_by_letter = Cocktail.objects.filter(name__startswith=letter)
+        return cocktails_by_letter.order_by(Lower("name"))
 
 
 class ResultView(ListView):
@@ -73,9 +77,10 @@ class ShoppingListView(View):
     context_object_name = "items"
 
     def get(self, request):
+        user_ingredients = Ingredient.objects.filter(
+            on_shopping_list_of=request.user)
         return render(request, self.template_name,
-                      {"items": Ingredient.objects.filter(on_shopping_list_of=request.user).order_by(
-                          Lower("cocktail"))})
+                      {"items": user_ingredients.order_by(Lower("cocktail"))})
 
     def post(self, request):
         # get shopping list of logged in user
@@ -86,7 +91,7 @@ class ShoppingListView(View):
             try:
                 key, value = item.split(":")
                 ingredient = Ingredient.objects.get(pk=key)
-                ingredient.on_shopping_list_of = request.user if "True" == value else None
+                ingredient.on_shopping_list_of = request.user if value == "True" else None
                 ingredient.save()
             except:
                 pass
@@ -179,17 +184,18 @@ class CocktailUpdate(UpdateView):
     fields = ["name", "picture"]
 
     def get(self, request, *args, **kwargs):
-        if request.user == Cocktail.objects.get(pk=kwargs["pk"]).creator:
-            kwargs["ing"] = Ingredient.objects.filter(cocktail_id=kwargs["pk"])
-            return super(CocktailUpdate, self).get(request, args, kwargs)
-
-        return redirect('cocktails:detail', kwargs["pk"])
+        get = super(CocktailUpdate, self).get(request, args, kwargs)
+        return get
 
     def get_context_data(self, **kwargs):
         context = super(CocktailUpdate, self).get_context_data(**kwargs)
-        context["ingredients"] = Ingredient.objects.filter(
-            cocktail=self.object.id)
+        ingredients = Ingredient.objects.filter(cocktail=self.object.id)
+        context.update({"ingredients": ingredients})
+
         return context
+
+    def get_template_names(self):
+        pass
 
 
 @method_decorator(login_required, name='dispatch')
@@ -208,7 +214,7 @@ class UserFormView(View):
 
     def post(self, request):
         form = self.form_class(request.POST)
-        if "register" in request.POST:
+        if "register" in request.POST and form.is_valid():
             # fake, validation commit
             user = form.save(commit=False)
 
@@ -243,14 +249,14 @@ class VoteView(View):
         return redirect("cocktails:detail", id)
 
     def post(self, request, id):
-        v = Vote()
-        v.voter = request.user
-        v.is_upvote = True if request.POST["vote"] == "up" else False
+        vote = Vote()
+        vote.voter = request.user
+        vote.is_upvote = True if request.POST["vote"] == "up" else False
         cocktail = Cocktail.objects.get(pk=id)
-        v.cocktail = cocktail
-        v.save()
-        cocktail.taste_rating = len(Vote.objects.filter(cocktail=id, is_upvote=True)) - len(
-            Vote.objects.filter(cocktail=id,
-                                is_upvote=False))
+        vote.cocktail = cocktail
+        vote.save()
+        total_upvotes = Vote.objects.filter(cocktail=id, is_upvote=True)
+        total_downvotes = Vote.objects.filter(cocktail=id, is_upvote=False)
+        cocktail.taste_rating = len(total_upvotes) - len(total_downvotes)
         cocktail.save()
         return redirect("cocktails:detail", id)

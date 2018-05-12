@@ -1,6 +1,6 @@
 {% extends "cocktails/base.html" %} {% block title %}New Cocktail {% endblock %} {%block head%} {% load static%}
 <script src="{% static 'cocktails/scripts/form.js'%}"></script>
-<link href="{% static 'cocktails/styles/form.css'%}" rel="stylesheet"> {%endblock%} {% block body %}
+<link href="{% static 'cocktails/styles/create-form.css'%}" rel="stylesheet"> {%endblock%} {% block body %}
 <div class="wrapper">
     <form class="entry" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}

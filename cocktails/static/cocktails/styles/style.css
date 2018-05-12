@@ -1,7 +1,8 @@
 * {
   box-sizing: border-box;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+}
 
 body,
 h1,
@@ -11,57 +12,79 @@ h4,
 h5,
 h6,
 input {
-  font-family: "Karma", sans-serif; }
+  font-family: "Karma", sans-serif;
+}
 
 .w3-bar-block .w3-bar-item {
-  padding: 20px; }
+  padding: 20px;
+}
 
 a {
   color: black;
-  text-decoration: none; }
-  a:visited {
-    color: black; }
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
+li {
+  list-style: none;
+}
 
 body {
   background: url("../img/beach.jpg") no-repeat fixed;
   background-size: cover;
   position: fixed;
   width: 100%;
-  height: 100%; }
-  body .content-wrapper {
-    display: flex;
-    justify-content: center;
-    height: 100%;
-    position: relative;
-    z-index: 1; }
-    body .content-wrapper .content {
-      background: rgba(255, 255, 255, 0.8);
-      margin: 10px 0;
-      border: 1px solid black;
-      width: 90%;
-      position: relative; }
-      body .content-wrapper .content .cotd {
-        background-color: #fff; }
-      body .content-wrapper .content .add {
-        box-sizing: border-box;
-        position: fixed;
-        margin: auto;
-        height: 3em;
-        width: 3em;
-        bottom: 0px;
-        left: 0px;
-        background-color: greenyellow;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center; }
-        body .content-wrapper .content .add .plus {
-          text-decoration: none;
-          font-size: 2.5em; }
-        body .content-wrapper .content .add:hover {
-          border: 1px solid #6e9919; }
-      body .content-wrapper .content .disabled {
-        background-color: darkslategrey !important; }
-        body .content-wrapper .content .disabled .plus {
-          cursor: default; }
+  height: 100%;
+}
 
+body .content-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 94%;
+  position: relative;
+  z-index: 1;
+}
+
+body .content-wrapper .content {
+  background: rgba(255, 255, 255, 0.8);
+  width: 90%;
+  position: relative;
+}
+
+body .content-wrapper .content .cotd {
+  background-color: #fff;
+}
+
+body .content-wrapper .content .add {
+  box-sizing: border-box;
+  position: fixed;
+  margin: 10px;
+  height: 3em;
+  width: 3em;
+  bottom: 0px;
+  background-color: greenyellow;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+body .content-wrapper .content .add .plus {
+  text-decoration: none;
+  font-size: 2.5em;
+}
+
+body .content-wrapper .content .add:hover {
+  border: 1px solid #6e9919;
+}
+
+body .content-wrapper .content .disabled {
+  background-color: darkslategrey !important;
+}
+
+body .content-wrapper .content .disabled .plus {
+  cursor: default;
+}
 /*# sourceMappingURL=style.css.map */

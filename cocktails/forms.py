@@ -16,7 +16,11 @@ class RegisterForm(ModelForm):
 
 
 class UserForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={"placeholder": "Username"}))
+
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={"placeholder": "Password"}))
 
     class Meta:
         model = User
@@ -29,7 +33,7 @@ class CocktailForm(ModelForm):
     name = forms.CharField(label="name", widget=forms.TextInput(
         attrs={'placeholder': 'Enter your cocktails name here..'}))
     picture = forms.ImageField(label="picture")
-    #, widget=forms.FileInput(attrs={'onchange': 'readURL(this)'}))
+    # widget=forms.FileInput(attrs={'onchange': 'readURL(this)'}))
 
     class Meta:
         model = Cocktail

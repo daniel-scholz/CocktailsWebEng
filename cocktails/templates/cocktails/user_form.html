@@ -2,16 +2,21 @@
 {% block title %}
     Login
 {% endblock %}
+{% block head%}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static "cocktails/styles/login.css"%}">
+{% endblock%}
 
 {% block body %}
-    <h1>Enter your data!</h1>
-    <form class="" action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% include "cocktails/form_template.html" %}
-        <div>
-            <label for="register">New account?</label>
-            <input type="checkbox" id="register" name="register">
-        </div>
-        <button type="submit" class="btn btn-success">Drink!</button>
-    </form>
+    <div class="login-wrapper">
+        <form class="login-form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include "cocktails/form_template.html" %}
+            <div>
+                <label for="register">New account?</label>
+                <input type="checkbox" id="register" name="register">
+            </div>
+            <button type="submit" class="btn btn-success">Drink!</button>
+        </form>
+    </div>
 {% endblock %}

@@ -36,5 +36,7 @@
         <span><a href="{% url "cocktails:cocktail-delete" cocktail.id %}">delete</a></span>
     {% endif %}
     {% include "cocktails/cocktail.html" %}
+    {{ ingredients }}
+
 {% endblock %}
 </html>

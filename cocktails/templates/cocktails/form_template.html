@@ -1,10 +1,11 @@
-<ul>
+<div class="form-wrapper">
     {% for f in form %}
+    <div class="error">
         {{ f.errors }}
-        <li>
-            {{ f.label_tag }}
-            {{ f }}
-        </li>
+    </div>
+    <div class="text-field">
+        {{ f }}
+    </div>
     {% endfor %}
 
-</ul>
+</div>
