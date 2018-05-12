@@ -35,7 +35,7 @@ class TopFiveView(ListView):
 
     def get_queryset(self):
         get_request = self.request.GET
-        if get_request.__contains__("sort_by") and get_request["sort_by"] != "" and get_request['sort_by'].lower() != "fresh":
+        if get_request.__contains__("sort_by") and get_request["sort_by"] and get_request['sort_by'].lower() != "fresh":
             sort_param = "-" + get_request["sort_by"] + "_rating"
         else:
             sort_param = "timestamp"
