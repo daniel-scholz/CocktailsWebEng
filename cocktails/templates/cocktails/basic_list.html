@@ -1,7 +1,9 @@
 <div class="cocktails-list">
     {% for c in cocktails %}
         <div class="entry">
-            <div class="img-wrapper"><img class="img" src="/media/{{ c.picture }}"></div>
+            <div class="img-wrapper">
+                <img class="img" src="/media/{{ c.picture }}">
+            </div>
             <div class="description">
                 <h3 class="name"><a href="{% url "cocktails:detail" c.id %}"> {{ c.name }}</a></h3>
                 <div>Drunk: {% widthratio c.drunk_rating 1 100 %}%</div>

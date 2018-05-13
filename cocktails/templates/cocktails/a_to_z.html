@@ -1,7 +1,7 @@
 {% extends "cocktails/base.html" %}
 {% block title %} A to Z {% endblock %}
-{% load static %}
 {% block head %}
+    {% load static %}
     <link href="{% static "cocktails/styles/top5.css" %}" rel="stylesheet" type="text/css">
     <script src="{% static "cocktails/scripts/top5.js" %}"></script>
 {% endblock %}
@@ -23,8 +23,8 @@
         {% if cocktails %}
             {% include "cocktails/basic_list.html" %}
         {% else %}
-            <h2>No cocktails here! Be the first to contibrute a cocktail with the letter "{{ request.GET.sort_by}}" </h2>
+            <h2>No cocktails here! Be the first to contibrute a cocktail with the letter
+                "{{ request.GET.sort_by }}" </h2>
         {% endif %}
     </div>
 {% endblock %}
-

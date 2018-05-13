@@ -29,10 +29,8 @@
         <div id="TOP5" class="nav-item top5"><a href="{% url "cocktails:top-five" %}">TOP 5</a></div>
         <div id="" class="nav-item a-to-z"><a href="{% url "cocktails:a-to-z" %}">A-Z</a></div>
         <form class="nav-item search" method="get" action="{% url "cocktails:search-result" %}">
-            <!-- TODO add search icon-->
             {% csrf_token %}
             <input id="search" formnovalidate required type="text" placeholder="Search..." name="q">
-            <!-- <button type="submit">Search</button>-->
             <i class="fas fa-search"></i>
         </form>
         {% if not user.is_authenticated %}
@@ -60,11 +58,15 @@
 </nav>
 <div class="content-wrapper">
     <div class="content">
-        {% block body %}{% endblock %}
+        {% block body %}
+
+        {% endblock %}
         <div class="add">
             <a class="plus" href="{% url "cocktails:cocktail-add" %}"
                title="Log in to add cocktail!">
-                +</a></div>
+                +
+            </a>
+        </div>
     </div>
 </div>
 

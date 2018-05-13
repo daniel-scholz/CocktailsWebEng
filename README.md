@@ -22,9 +22,10 @@ After we installed our Python packages including the main framework 'Django',we 
 
 To start the server on localhost run these commands in your command prompt.
 
- `python manage.py runserver`
+`python manage.py runserver`
 
 Now you should open your browser at `127.0.0.1:8000` to view the web page.
 
 ## Notice
+
 If you want to run the server on macOS or Linux/unix you need to replace alle `python`/`pip` commands with `python3`/`pip3` commands.
