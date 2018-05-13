@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
-# Create your models here.
+# all tables which are represented in the database via a orm model
 
 
 class Cocktail(models.Model):
@@ -20,7 +20,7 @@ class Cocktail(models.Model):
     def __str__(self):
         return self.name
 
-
+# 
 class Ingredient(models.Model):
     name = models.CharField(max_length=250)
     amount = models.FloatField(default=0)

@@ -21,6 +21,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 50%;
 }
 
 .wrapper .entry .img-wrapper img {
@@ -111,4 +112,4 @@
 .btn:hover {
   cursor: pointer;
 }
-/*# sourceMappingURL=form.css.map */
+/*# sourceMappingURL=create-form.css.map */

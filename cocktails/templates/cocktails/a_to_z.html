@@ -23,7 +23,7 @@
         {% if cocktails %}
             {% include "cocktails/basic_list.html" %}
         {% else %}
-            <div>no cocktails here</div>
+            <h2>No cocktails here! Be the first to contibrute a cocktail with the letter "{{ request.GET.sort_by}}" </h2>
         {% endif %}
     </div>
 {% endblock %}

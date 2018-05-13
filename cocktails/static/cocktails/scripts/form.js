@@ -27,8 +27,14 @@ window.onload = function() {
       if (field != "remove") {
         let label = document.createElement("label");
         label.setAttribute("for", id);
-        label.appendChild(document.createTextNode(field));
-
+        if (field === "ingredient_name")
+          label.appendChild(document.createTextNode("Ingredient"));
+        else if (field === "is_alcohol")
+          label.appendChild(document.createTextNode("Alcoholic?"));
+        else {
+          capitalize_field = field.charAt(0).toUpperCase() + field.slice(1);
+          label.appendChild(document.createTextNode(capitalize_field));
+        }
         new_ingredient.appendChild(label);
       }
 
@@ -37,7 +43,10 @@ window.onload = function() {
       new_ingredient.setAttribute("style", "display:block; margin: 5px 0;");
       new_ingredient.setAttribute("id", "ingredient_" + ingredient_counter);
       new_ingredient.appendChild(text_field);
-      ingredient_list.insertBefore(new_ingredient,ingredient_list.childNodes[0]);
+      ingredient_list.insertBefore(
+        new_ingredient,
+        ingredient_list.childNodes[0]
+      );
     }
 
     let is_not_alcohol = document.createElement("input");

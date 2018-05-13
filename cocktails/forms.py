@@ -7,14 +7,7 @@ from django.forms import ModelForm
 from cocktails.models import Cocktail, Vote
 
 
-class RegisterForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password']
-
-
+# form for logging a user in or registering a users
 class UserForm(ModelForm):
     username = forms.CharField(widget=forms.TextInput(
         attrs={"placeholder": "Username"}))
@@ -28,17 +21,16 @@ class UserForm(ModelForm):
 
 
 class CocktailForm(ModelForm):
-    # query_set = Ingredient.objects.order_by("name").values_list("name").distinct()
-    # ingredients = forms.ModelMultipleChoiceField(queryset=query_set)
+    # adds html attributes to the name and pictures
     name = forms.CharField(label="name", widget=forms.TextInput(
         attrs={'placeholder': 'Enter your cocktails name here..'}))
     picture = forms.ImageField(label="picture")
-    # widget=forms.FileInput(attrs={'onchange': 'readURL(this)'}))
 
     class Meta:
         model = Cocktail
         fields = ['name', 'picture']
 
+    # method for checking if a unit was valid
     def units_valid(self, units) -> (bool, Optional[str]):
         valid_units = ["ml", "cl", "dl", "l", "stk"]
         check = False
@@ -60,8 +52,9 @@ class CocktailForm(ModelForm):
 
         return check
 
-
+# specifying a vote form for catching up and down votes on the cocktails
 class VoteForm(ModelForm):
     class Meta:
         model = Vote
+        # determines the field for a vote form
         fields = ["voter", "cocktail", "is_upvote"]
