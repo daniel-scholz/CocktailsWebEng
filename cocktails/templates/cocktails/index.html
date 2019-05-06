@@ -3,17 +3,19 @@
 {% block body %}
 
     {% if  all_cocktails %}
-        <div class="cotd">
-            <h1> Cocktail of the day:<i>{{ cotd }} </i></h1>
-            <a href="{% url "cocktails:detail" cotd.id %}">
-                <img alt="The delicious {{ cotd.name }}" src="/media/{{ cotd.picture }}">
-            </a>
-            <ul>
-                {% for foo in  cotd.ingredient_set.all %}
-                    <li> {{ foo }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% if cotd %}
+            <div class="cotd">
+                <h1> Cocktail of the day:<i>{{ cotd }} </i></h1>
+                <a href="{% url "cocktails:detail" cotd.id %}">
+                    <img alt="The delicious {{ cotd.name }}" src="/media/{{ cotd.picture }}">
+                </a>
+                <ul>
+                    {% for foo in  cotd.ingredient_set.all %}
+                        <li> {{ foo }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {%endif%}
         <h3>Construction area...</h3>
 
     {% else %}

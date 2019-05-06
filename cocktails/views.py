@@ -22,7 +22,7 @@ class IndexView(View):
         cocktails = Cocktail.objects
         return render(request, template_name=self.template_name, context={
             "all_cocktails": cocktails.all(),
-            "cotd": cocktails.get(name="Daniel is in fact making progress")
+            "cotd": cocktails.filter(id=1)
         })
 
 
