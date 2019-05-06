@@ -1,86 +1,29 @@
-{% extends "cocktails/base.html" %}
-{% block title %}New Cocktail
-{% endblock %}
-
-{% block body %}
-    <form class="" action="" method="post" enctype="multipart/form-data">
+{% extends "cocktails/base.html" %} {% block title %}New Cocktail {% endblock %} {%block head%} {% load static%}
+<script src="{% static 'cocktails/scripts/form.js'%}"></script>
+<link href="{% static 'cocktails/styles/create-form.css'%}" rel="stylesheet"> {%endblock%} {% block body %}
+<div class="wrapper">
+    <form class="entry" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <ul>
-            {% for f in form %}
-                {{ f.errors }}
-                <li>
-                    {{ f.label_tag }}
-                    {{ f }}
-                </li>
-            {% endfor %}
-        </ul>
-        <h3>Ingredient list</h3>
-        <div class="ingredient-list">
-
+        <div class="img-wrapper">
+            <img src="" id="pic" alt="Put your pretty litle picture here!"> {{ form.picture }}
         </div>
-        <button type="button" class="" onclick="f()">+
-        </button>
-        <br>
-        <input type="hidden" name="ingredient_counter" id="ingredient_counter">
-        <button type="submit" class="">Drink!</button>
+        <div class="error">
+            {{ form.picture.errors }}
+        </div>
+        <div class="description">
+            <div class="name">{{form.name}}</div>
+            <h3>Add your ingredients here!</h3>
+            <button type="button" id="add-ingredient-btn" class="add-btn btn" onclick="newIngredient()">+
+            </button>
+            <div class="ingredient-list">
+            </div>
+            <input type="hidden" name="ingredient_counter" id="ingredient_counter">
+            <button type="submit" class="submit btn">Drink!</button>
+        </div>
+        <div class="error">
+            {{ form.name.errors }}
+        </div>
     </form>
+</div>
 
-    <script>
-        ingredient_counter = 0
-
-        function f() {
-            let ingredient_list = document.getElementsByClassName(' ingredient-list')[0]
-            let ingredient_fields = ["ingredient_name", "amount", "unit", "is_alcohol"]
-            let new_ingredient = document.createElement("div")
-
-            function create_textfield(id) {
-                let text_field = document.createElement("input")
-                text_field.setAttribute("id", id)
-                text_field.setAttribute("name", field)
-                text_field.setAttribute("required", "")
-                if (field === "amount") text_field.setAttribute("type", "number")
-                else if (field === "is_alcohol") {
-                    text_field.removeAttribute("required")
-                    text_field.setAttribute("type", "checkbox")
-                    text_field.addEventListener("change", function (e) {
-                        e.preventDefault()
-                       let hidden_field = this.parentNode.childNodes[this.parentNode.childNodes.length - 1]
-                        if (hidden_field.getAttribute("value") == 1)
-                            hidden_field.setAttribute("value", 0)
-                        else
-                            hidden_field.setAttribute("value", 1)
-                    })
-                }
-
-                return text_field
-            }
-
-            for (field of ingredient_fields) {
-                const id = "id_" + field + ingredient_counter
-                let label = document.createElement("label")
-                label.setAttribute("for", id)
-                label.appendChild(document.createTextNode(field))
-
-                new_ingredient.setAttribute("class", "ingredient")
-                new_ingredient.setAttribute("style", "display:block; margin: 5px 0;")
-
-                const text_field = create_textfield(id);
-
-                new_ingredient.appendChild(label)
-                new_ingredient.appendChild(text_field)
-                ingredient_list.appendChild(new_ingredient)
-            }
-
-            let is_not_alcohol = document.createElement("input")
-            is_not_alcohol.setAttribute("id", "id_hidden" + ingredient_counter)
-            is_not_alcohol.setAttribute("name", "is_not_alcohol")
-            is_not_alcohol.setAttribute("value", 1)
-
-            is_not_alcohol.setAttribute("hidden", "")
-            new_ingredient.appendChild(is_not_alcohol)
-            document.getElementById("ingredient_counter").setAttribute("value", ++ingredient_counter)
-            console.log(ingredient_counter)
-        }
-
-    </script>
 {% endblock %}

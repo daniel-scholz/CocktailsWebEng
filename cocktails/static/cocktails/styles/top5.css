@@ -1,24 +1,37 @@
-.sort-options {
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.wrapper .sort-options {
   width: 100%;
 }
 
-.sort-options form {
+.wrapper .sort-options .option-form {
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: stretch;
   width: 100%;
 }
 
-.sort-options form .option {
-  background: grey;
-  border-radius: 10%;
-  padding: 5px;
+.wrapper .sort-options .option-form .option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 33.3333%;
+  background: #ffff99;
 }
 
-.sort-options form .option:hover {
+.wrapper .sort-options .option-form .option:hover {
   cursor: pointer;
 }
 
-.sort-options form .selected {
-  border: 14px solid green;
+.wrapper .sort-options .option-form .option .option-text {
+  padding: 5px 0;
+}
+
+.wrapper .sort-options .option-form .selected {
+  border-bottom: 2px solid #ff8080;
 }
 /*# sourceMappingURL=top5.css.map */

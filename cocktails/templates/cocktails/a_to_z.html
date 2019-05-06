@@ -1,11 +1,30 @@
 {% extends "cocktails/base.html" %}
 {% block title %} A to Z {% endblock %}
-{% block body %}
-    <h1>Here you see every Cocktail</h1>
-    {% if cocktails %}
-        {% include "cocktails/basic_list.html" %}
-    {% else %}
-        <div>no top5 at da moment!</div>
-    {% endif %}
+{% block head %}
+    {% load static %}
+    <link href="{% static "cocktails/styles/top5.css" %}" rel="stylesheet" type="text/css">
+    <script src="{% static "cocktails/scripts/top5.js" %}"></script>
 {% endblock %}
-
+{% block body %}
+    <div class="wrapper">
+        <div class="sort-options">
+            <form method="get" class="option-form">
+                <div class="option {% if request.GET.sort_by == "a" or not request.GET.sort_by %} selected {% endif %}">
+                    <span class="option-text">A</span>
+                </div>
+                {% for letter in "bcdefghijklmnopqrstuvwxyz" %}
+                    <div class="option {% if request.GET.sort_by ==  letter %} selected {% endif %}">
+                        <span class="option-text">{{ letter.upper }}</span>
+                    </div>
+                {% endfor %}
+                <input hidden id="hidden-option" name="sort_by" value="{{ request.GET.sort_by }}">
+            </form>
+        </div>
+        {% if cocktails %}
+            {% include "cocktails/basic_list.html" %}
+        {% else %}
+            <h2>No cocktails here! Be the first to contibrute a cocktail with the letter
+                "{{ request.GET.sort_by }}" </h2>
+        {% endif %}
+    </div>
+{% endblock %}

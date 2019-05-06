@@ -1,0 +1,48 @@
+.cocktails-list {
+  display: inline-flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  width: 100%;
+  height: 90%;
+  padding: 10px;
+  .entry {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.8);
+    transition-property: top;
+    transition-duration: 2s;
+    transition-timing-function: ease;
+    @media (min-width: 760px) {
+      width: 50%;
+    }
+    @media (min-width: 1200px) {
+      width: 20%;
+    }
+    &:hover {
+      position: relative;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: grey 0 0 10px;
+      top: -5px;
+    }
+    .img-wrapper {
+      display: flex;
+      justify-content: center;
+      height: 66.6%;
+      img {
+        object-fit: contain;
+        max-width: 100%;
+      }
+    }
+    .description {
+      height: 33%;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      .name {
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,20 +1,30 @@
-.sort-options {
-  width: 100%;
-  form {
-    display: inline-flex;
-    justify-content: space-around;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .sort-options {
     width: 100%;
-
-    .option {
-      background: grey;
-      border-radius: 10%;
-      padding: 5px;
-      &:hover {
-        cursor: pointer;
+    .option-form {
+      display: inline-flex;
+      justify-content: stretch;
+      width: 100%;
+      .option {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 33.3333%;
+        background: #ffff99;
+        &:hover {
+          cursor: pointer;
+        }
+        .option-text {
+          padding: 5px 0;
+        }
       }
-    }
-    .selected {
-      border: 14px solid green;
+      .selected {
+        border-bottom: 2px solid #ff8080;
+      }
     }
   }
 }

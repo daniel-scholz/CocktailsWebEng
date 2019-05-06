@@ -2,23 +2,35 @@
 {% block title %} Home {% endblock %}
 {% block body %}
 
-    {% if  all_cocktails %}
-        {% if cotd %}
-            <div class="cotd">
-                <h1> Cocktail of the day:<i>{{ cotd }} </i></h1>
-                <a href="{% url "cocktails:detail" cotd.id %}">
-                    <img alt="The delicious {{ cotd.name }}" src="/media/{{ cotd.picture }}">
-                </a>
-                <ul>
-                    {% for foo in  cotd.ingredient_set.all %}
-                        <li> {{ foo }}</li>
+    {% if  cocktail %}
+        <h2>Cocktail of the day: <span style="font-style: italic;">{{ cocktail }}</span></h2>
+        <div class="cocktail-wrapper">
+            <div class="img-wrapper">
+                <img alt="A picture of {{ cocktail.name }} " height="200px" src="{{ cocktail.picture.url }}">
+            </div>
+            {% if error_message %}
+                <h1>{{ error_message }}</h1>
+            {% endif %}
+            {% if ingredients %}
+            <h2> Ingredients: </h2>   
+            <ul class="ingredient-list">
+                    {% for i in ingredients %}
+                        <li class="check-field-li">
+                        <label for="{{ i.id }}">
+                                {{ i.name }}: {{ i.amount }} {{ i.unit }}
+                                {% if i.is_alcohol %}
+                                    <span>(alc.)</span>
+                                {% endif %}
+                            </label>
+                        </li>
                     {% endfor %}
                 </ul>
-            </div>
-        {%endif%}
-        <h3>Construction area...</h3>
-
+            {% else %}
+                <h2 class="ingredients"> This cocktail consists of nothing but mere air and love!</h2>
+            {% endif %}
+        </div>
+    
     {% else %}
-        <h2>nothin.. looool</h2>
+        <h2>No Cocktail of the day today!</h2>
     {% endif %}
 {% endblock %}

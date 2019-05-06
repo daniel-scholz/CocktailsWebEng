@@ -4,19 +4,16 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from cocktails.models import Cocktail
+from cocktails.models import Cocktail, Vote
 
 
-class RegisterForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+# form for logging a user in or registering a users
+class UserForm(ModelForm):
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={"placeholder": "Username"}))
 
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password']
-
-
-class LoginForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={"placeholder": "Password"}))
 
     class Meta:
         model = User
@@ -24,12 +21,16 @@ class LoginForm(ModelForm):
 
 
 class CocktailForm(ModelForm):
-    # query_set = Ingredient.objects.order_by("name").values_list("name").distinct()
-    # ingredients = forms.ModelMultipleChoiceField(queryset=query_set)
+    # adds html attributes to the name and pictures
+    name = forms.CharField(label="name", widget=forms.TextInput(
+        attrs={'placeholder': 'Enter your cocktails name here..'}))
+    picture = forms.ImageField(label="picture")
+
     class Meta:
         model = Cocktail
         fields = ['name', 'picture']
 
+    # method for checking if a unit was valid
     def units_valid(self, units) -> (bool, Optional[str]):
         valid_units = ["ml", "cl", "dl", "l", "stk"]
         check = False
@@ -44,21 +45,16 @@ class CocktailForm(ModelForm):
             if not check:
                 self.add_error("name",
                                ValueError(
-                                   "Allowed Units for ingredients are: %s" % valid_units.__str__().strip("[")
+                                   "Allowed Units for ingredients are: %s" % valid_units.__str__().strip(
+                                       "[")
                                    .strip("]")))
                 return False
 
         return check
 
-
-"""
-class IngredientForm(ModelForm):
+# specifying a vote form for catching up and down votes on the cocktails
+class VoteForm(ModelForm):
     class Meta:
-        model = Ingredient
-        fields = ['name', 'weight', "quantity", "volume",
-                  "is_alcohol", "cocktail"]
-
-    def clean(self):
-        super(IngredientForm, self).clean()
-        return self.fields[2] or self.fields[3] or self.fields[1]
-"""
+        model = Vote
+        # determines the field for a vote form
+        fields = ["voter", "cocktail", "is_upvote"]

@@ -1,0 +1,30 @@
+{% extends "cocktails/base.html" %}
+{% block title %}TOP5{% endblock %}
+{% block head %}
+    {% load static %}
+    <script src="{% static "cocktails/scripts/top5.js" %}"></script>
+    <link href="{% static "cocktails/styles/top5.css" %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block body %}
+    <div class="wrapper">
+        <div class="sort-options">
+            <form method="get" class="option-form">
+                <div class="option {% if request.GET.sort_by == "drunk" %} selected {% endif %}">
+                    <span class="option-text">Drunk</span>
+                </div>
+                <div class="option {% if request.GET.sort_by == "taste" %} selected {% endif %}">
+                    <span class="option-text">Taste</span>
+                </div>
+                <div class="option {% if request.GET.sort_by == "fresh" or not request.GET.sort_by %} selected {% endif %}">
+                    <span class="option-text">Fresh</span>
+                </div>
+                <input hidden id="hidden-option" name="sort_by" value="{{ request.GET.sort_by }}">
+            </form>
+        </div>
+        {% if cocktails %}
+            {% include "cocktails/basic_list.html" %}
+        {% else %}
+            <h2>No top5 cocktails at the moment. Be the first to add your cocktail to the top5!</h2>
+        {% endif %}
+    </div>
+{% endblock %}

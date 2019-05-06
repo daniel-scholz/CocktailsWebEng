@@ -1,0 +1,26 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 66.67%;
+  .login-form {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .form-wrapper {
+      .text-field {
+        background-color: beige;
+        height: 2em;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 10px;
+        input {
+          border: none;
+          width: 100%;
+          background: transparent;
+        }
+      }
+    }
+  }
+}
